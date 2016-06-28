@@ -8,15 +8,19 @@ module.exports = {
         }
         else if(creep.ticksToLive < 500)
         {
-            creep.memory.renew = true;
-        }
-
-        if(creep.memory.renew)
-        {            
-            var spawn = creep.pos.findClosestByRange(FIND_MY_SPAWNS);
-            creep.moveTo(spawn);   
-            creep.say('renew');         
-            return true;            
+            var spawn = creep.pos.findClosestByRange(FIND_MY_SPAWNS, {filter: (spwn) => !spwn.spawning});
+            if(spawn)
+            {
+                creep.memory.renew = true;
+                creep.moveTo(spawn);   
+                creep.say('renew');         
+                return true; 
+            }
+            else
+            {
+                creep.memory.renew = false;
+                return false;
+            }          
         }
         return false;        
     }

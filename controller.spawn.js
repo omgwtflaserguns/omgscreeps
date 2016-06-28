@@ -1,6 +1,11 @@
-function spawnCreep(spawn, modules, role) {
+function spawnCreep(spawn, modules, role, memory) {
     if (spawn.canCreateCreep(modules, undefined) == 0) {
-        var newName = spawn.createCreep(modules, undefined, { home: spawn.room.name, phase: spawn.room.memory.phase.id, role: role });
+
+        memory.home = spawn.room.name;
+        memory.phase = spawn.room.memory.phase.id;
+        memory.role = role;
+
+        var newName = spawn.createCreep(modules, undefined, memory);
         console.log('Spawning ' + newName + ' phase ' + spawn.room.memory.phase.id + ' ' + role + ' creep with ' + modules);
         return true;
     }
@@ -24,6 +29,7 @@ function spawnCreepsByRoomPhase(spawn) {
     var spawnCount = spawn.room.find(FIND_SOURCES).length;
 
     var existingCreeps = [];
+
     for (var name in Game.creeps) {
         var creep = Game.creeps[name];
 
@@ -44,16 +50,23 @@ function spawnCreepsByRoomPhase(spawn) {
         }
     }
 
-    for (var role in spawn.room.memory.phase.creeps) {
 
-        var typeDefinition = spawn.room.memory.phase.creeps[role];
+    for (var currentSpawnIteration = 1; currentSpawnIteration <= spawnCount; currentSpawnIteration++) {
+        for (var role in spawn.room.memory.phase.creeps) {
 
-        if (typeDefinition.perSource) {
-            typeDefinition.count = typeDefinition.count * spawnCount;
-        }
+            
+            var typeDefinition = spawn.room.memory.phase.creeps[role];
+            var countTarget = typeDefinition.count;
 
-        if (typeDefinition.count > 0 && (!(role in existingCreeps) || existingCreeps[role] < typeDefinition.count)) {
-            return spawnCreep(spawn, typeDefinition.modules, role);            
+            if (typeDefinition.perSource) {
+                countTarget = typeDefinition.count * currentSpawnIteration;
+            }
+            
+            //console.log("Spawn Iteration: " + currentSpawnIteration + " for role " + role + " " + existingCreeps[role] + " / " + countTarget)
+            
+            if (countTarget > 0 && (!(role in existingCreeps) || existingCreeps[role] < countTarget)) {
+                return spawnCreep(spawn, typeDefinition.modules, role, typeDefinition.memory);
+            }
         }
     }
 
@@ -87,13 +100,13 @@ function deprecateCreeps(spawn) {
     }
 }
 
-function removeDeadCreeps() {    
+function removeDeadCreeps() {
     for (var name in Memory.creeps) {
         if (!Game.creeps[name]) {
             delete Memory.creeps[name];
-            console.log('Dead creep ' + name + ' removed from memory');            
+            console.log('Dead creep ' + name + ' removed from memory');
         }
-    }    
+    }
 }
 
 module.exports = {
@@ -108,14 +121,17 @@ module.exports = {
                 continue;
             }
 
-            spawning = spawning || spawnCreepsByRoomPhase(spawn);           
+            if(Game.time % 10 == 0)
+            {
+                spawning = spawning || spawnCreepsByRoomPhase(spawn);
+            }
 
             renewCreepsInRange(spawn);
         }
-        
+
         if (!spawning) {
             if (Game.time % 50 == 0) {
-                removeDeadCreeps();                
+                removeDeadCreeps();
             }
         }
     }

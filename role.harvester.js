@@ -1,14 +1,11 @@
-var traitGather = require('trait.gather');
+var traitMine = require('trait.mine');
 var traitRenew = require('trait.renew');
 var traitDeprecated = require('trait.deprecated');
+var traitGather = require('trait.gather');
 
-module.exports = {
-    hasTargets: function (room) {
-
-    },
+module.exports = {    
     run: function (creep) {
-
-        if (!traitDeprecated.deprecated(creep) && !traitRenew.renew(creep) && !traitGather.gather(creep)) {
+        if (!traitDeprecated.deprecated(creep) && !traitRenew.renew(creep) && !traitGather.gather(creep) && !traitMine.mineToCreep(creep)) {
             
             var target = creep.pos.findClosestByRange(FIND_STRUCTURES, {
                 filter: (structure) => {

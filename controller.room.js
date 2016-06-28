@@ -13,22 +13,26 @@ function setCurrentPhase(room)
                 harvester:{
                     perSource: false,
                     count: 10,
-                    modules: [WORK, WORK, CARRY, MOVE]
+                    modules: [WORK, WORK, CARRY, MOVE],
+                    memory: {}
                 },                
                 miner: {
                     perSource: false,
                     count: 0,
-                    modules: []
+                    modules: [],
+                    memory: {}
                 },
                 carrier: {
                     perSource: false,
                     count: 0,
-                    modules: []
+                    modules: [],
+                    memory: {}
                 },
                 builder: {
                     perSource: false,
                     count: 0,
-                    modules: []
+                    modules: [],
+                    memory: {}
                 }
             }     
         }
@@ -46,22 +50,26 @@ function setCurrentPhase(room)
                 harvester:{
                     perSource: false,
                     count: 0,
-                    modules: []
+                    modules: [],
+                    memory: {}
                 },                
                 miner: {
                     perSource: true,
                     count: 1,
-                    modules: [WORK, WORK, WORK, WORK, WORK, MOVE]
+                    modules: [WORK, WORK, WORK, WORK, WORK, MOVE],
+                    memory: {}
                 },
                 carrier: {
                     perSource: true,
-                    count: 2,
-                    modules: [CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE]
+                    count: 3,
+                    modules: [CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE],
+                    memory: {}
                 },
                 builder: {
                     perSource: true,
-                    count: 1,
-                    modules: [WORK, WORK, WORK, WORK, CARRY, CARRY, MOVE]
+                    count: 2,
+                    modules: [WORK, WORK, WORK, WORK, CARRY, CARRY, MOVE],
+                    memory: {}
                 }
             }     
         }

@@ -3,10 +3,18 @@ var traitRenew = require('trait.renew');
 var traitDeprecated = require('trait.deprecated');
 var _ = require('lodash');
 
-module.exports = {
-    hasTargets: function (room) {
+function transfer(creep, target){
+    var result = creep.transfer(target, RESOURCE_ENERGY)
 
-    },
+    if (result == ERR_NOT_IN_RANGE) {
+        creep.moveTo(target);
+    }
+    else if (result != OK && result != ERR_BUSY) {
+        console.log(creep.name + ' error on transfer: ' + result);
+    }
+}
+
+module.exports = {    
     run: function (creep) {
 
         if (!traitDeprecated.deprecated(creep) && !traitRenew.renew(creep) && !traitGather.gather(creep)) {
@@ -20,18 +28,10 @@ module.exports = {
             });
 
             if (target) {
-                var trans = creep.transfer(target, RESOURCE_ENERGY)
-
-                if (trans == ERR_NOT_IN_RANGE) {
-                    creep.moveTo(target);
-                }
-                else if (trans != OK) {
-                    console.log(creep.name + ' error on transfer: ' + trans);
-                }
+                transfer(creep, target);
             }
             else {
                 var targets = _.filter(Game.creeps, { memory: { role: 'builder' } });
-
 
                 var max = -1;
                 var target = undefined;
@@ -46,21 +46,12 @@ module.exports = {
                 }
 
                 if (target) {
-                    var trans = creep.transfer(target, RESOURCE_ENERGY)
-
-                    if (trans == ERR_NOT_IN_RANGE) {
-                        creep.moveTo(target);
-                    }
-                    else if (trans != OK) {
-                        console.log(creep.name + ' error on transfer: ' + trans);
-                    }
-
+                    transfer(creep, target);
                 }
-                else {
-                    if (creep.upgradeController(creep.room.controller) == ERR_NOT_IN_RANGE) {
-                        creep.moveTo(creep.room.controller);
-                    }
-                }
+                else
+                {
+                    console.log(creep.name + " no one needs energy...");
+                }                
             }
 
         }

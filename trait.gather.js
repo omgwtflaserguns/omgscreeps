@@ -1,15 +1,15 @@
 function setTarget(creep) {
 
-    var sources = creep.room.find(FIND_SOURCES, { filter: (src) => { return src.energy >= creep.carryCapacity } });
+    var resources = creep.room.find(FIND_DROPPED_RESOURCES, { filter: (res) => res.resourceType == RESOURCE_ENERGY });
 
-    if (!sources || sources.length == 0) {
+    if (!resources || resources.length == 0) {
         console.log(creep.name + " has nothing to gather.")
-        return true;
+        return false;
     }
 
     var srcCount = new Array();
-    for (var id in sources) {
-        var src = sources[id];
+    for (var id in resources) {
+        var src = resources[id];
         srcCount[src.id] = 0
     }
 
@@ -24,8 +24,8 @@ function setTarget(creep) {
 
     var min = 10000;
     var minSrc = undefined;
-    for (var id in sources) {
-        var src = sources[id];
+    for (var id in resources) {
+        var src = resources[id];
 
         if (srcCount[src.id] < min) {
             minSrc = src.id;
@@ -35,16 +35,38 @@ function setTarget(creep) {
 
     if (minSrc) {
         creep.memory.gatherTarget = minSrc;
+        return true;
     }
+    else
+    {
+        return false;
+    }
+}
+
+function gather(creep, target){
+    var result = creep.pickup(target);
+
+    if (result == ERR_NOT_IN_RANGE) {
+        creep.moveTo(target);
+        return true;
+    }    
+    else if (result == OK)
+    {
+        return true;
+    }
+    else if (result != ERR_BUSY) {
+        console.log(creep.name + ' error mining: ' + result);
+        return false;
+    } 
 }
 
 module.exports = {
 
     gather: function (creep) {
-
-        if (creep.carry.energy == creep.carryCapacity || (!creep.memory.gathering && creep.carry.energy != 0)) {
+        if (creep.carry.energy == creep.carryCapacity || (!creep.memory.mining && creep.carry.energy != 0)) {
             creep.memory.gathering = false;
             creep.memory.gatherTarget = undefined;
+            
             return false;
         }
 
@@ -52,42 +74,25 @@ module.exports = {
             creep.memory.gathering = true;
         }
 
-        var dropped = creep.pos.findClosestByRange(FIND_DROPPED_RESOURCES);
-
-        if (dropped) {
-            if (creep.pickup(dropped) == ERR_NOT_IN_RANGE) {
-                creep.moveTo(dropped);
-            }
-            return true;
-        }
-
         if (!creep.memory.gatherTarget) {
-            setTarget(creep);
-        }
-
-        var sources = creep.room.find(FIND_SOURCES);
-        var target = undefined;
-        for (var name in sources) {
-            var src = sources[name];
-            if (src.id == creep.memory.gatherTarget) {
-                target = src;
+            if(!setTarget(creep))
+            {
+                creep.memory.gathering = false;                
+                return false;
             }
         }
+
+        var target = Game.getObjectById(creep.memory.gatherTarget);        
 
         if (!target) {
             creep.memory.gatherTarget = undefined;
             return true;
         }
 
-        var hrvst = creep.harvest(target);
+        var gathering = gather(creep, target);
 
-        if (hrvst == ERR_NOT_IN_RANGE) {
-            creep.moveTo(target);
-        }
-        else if (hrvst == ERR_NOT_ENOUGH_RESOURCES) {
-            creep.memory.gatherTarget = undefined;
-        }
-
-        return true;
+        creep.memory.gathering = gathering;
+                
+        return gathering; 
     }
 };
