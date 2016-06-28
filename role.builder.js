@@ -2,7 +2,9 @@ var traitRenew = require('trait.renew');
 var traitDeprecated = require('trait.deprecated');
 
 function build(creep, target) {
-    if (creep.build(target) == ERR_NOT_IN_RANGE) {
+    var result = creep.build(target);
+
+    if (result == ERR_NOT_IN_RANGE) {
         creep.moveTo(target);
     }
     else if (result != OK && result != ERR_BUSY && result != ERR_NOT_ENOUGH_RESOURCES) {

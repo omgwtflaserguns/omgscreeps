@@ -1,9 +1,8 @@
 function setTarget(creep) {
 
-    var resources = creep.room.find(FIND_DROPPED_RESOURCES, { filter: (res) => res.resourceType == RESOURCE_ENERGY });
+    var resources = creep.room.find(FIND_DROPPED_RESOURCES, { filter: (res) => res.resourceType == RESOURCE_ENERGY});
 
-    if (!resources || resources.length == 0) {
-        console.log(creep.name + " has nothing to gather.")
+    if (!resources || resources.length == 0) {        
         return false;
     }
 
