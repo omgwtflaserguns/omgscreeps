@@ -81,8 +81,6 @@ function planExtensions(room) {
 
     //room.getPositionAt(line.x, line.y).createFlag(undefined, COLOR_BLUE);
 
-
-
     if (!room.memory.build) {
         room.memory.build = {};
     }
