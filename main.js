@@ -13,6 +13,6 @@ module.exports.loop = function () {
     creepController.run();
 
     if (Game.time % 50 == 0) {
-        buildController.planRoads();
+        buildController.run();
     }
 }

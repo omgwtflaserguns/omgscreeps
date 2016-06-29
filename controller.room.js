@@ -33,6 +33,10 @@ function setCurrentPhase(room) {
                     modules: [],
                     memory: {}
                 }
+            },
+            build: {
+                roads: false,
+                extensionCount: 0
             }
         }
     }
@@ -48,8 +52,8 @@ function setCurrentPhase(room) {
             creeps: {
                 harvester: {
                     perSource: false,
-                    count: 0,
-                    modules: [],
+                    count: 2,
+                    modules: [WORK, WORK, WORK, CARRY, CARRY, MOVE, MOVE, MOVE],
                     memory: {}
                 },
                 miner: {
@@ -70,35 +74,32 @@ function setCurrentPhase(room) {
                     modules: [WORK, WORK, WORK, WORK, CARRY, CARRY, MOVE],
                     memory: {}
                 }
+            },
+            build: {
+                roads: true,
+                extensionCount: 5
             }
         }
     }
 }
 
-function createNextRoad(room){
-
-    if(!room.memory.build.roadQ)
+function buildFromQ(room, q, structure)
+{
+    if(!q)
     {
         return false;
     }
-
-    var roadQ = room.memory.build.roadQ;
-    while(roadQ.length > 0)
+    
+    while(q.length > 0)
     {
-        var plannedRoad = roadQ.splice(0, 1)[0];        
-        var pos = room.getPositionAt(plannedRoad.x, plannedRoad.y);
-        var result = room.createConstructionSite(pos, STRUCTURE_ROAD)
+        var next = q.splice(0, 1)[0];        
+        var pos = room.getPositionAt(next.x, next.y);
+        var result = room.createConstructionSite(pos, structure)
         if (result == OK)
-        {
-            console.log(room.name + ' - constructed planned road at ' + plannedRoad.x + " / " + plannedRoad.y)
+        {            
             return true;
         }        
     }
-    return false;
-}
-
-function createNextExtension(room)
-{
     return false;
 }
 
@@ -115,11 +116,11 @@ function createConstructionSites(room) {
         return;
     }
 
-    var building = createNextExtension(room);
+    var building = buildFromQ(room, room.memory.build.extensionQ, STRUCTURE_EXTENSION);
 
-    if(!building)
+    if(!building && room.memory.phase.build.roads === true)
     {
-        createNextRoad(room);
+        building = buildFromQ(room, room.memory.build.roadQ, STRUCTURE_ROAD);
     }    
 }
 
