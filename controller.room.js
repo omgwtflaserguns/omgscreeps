@@ -1,5 +1,12 @@
 
 function setCurrentPhase(room) {
+
+    var oldPhase = undefined;
+    if(room.memory.phase)
+    {
+	oldPhase = room.memory.phase.id;
+    }
+
     /* Phase 1 
     Spawner             300
     -----------------------
@@ -121,6 +128,11 @@ function setCurrentPhase(room) {
                 extensionCount: 10
             }
         }
+    }
+
+    if(oldPhase && oldPhase != room.memory.phase.id)
+    {
+	Game.notify("Phase Change in room " + room.name + " " + oldPhase + " -> " + room.memory.phase.id);
     }
 }
 
