@@ -91,7 +91,7 @@ function isCoordBlocked(coord) {
     coord.forEach(function (obj) {
         if (obj.type == LOOK_STRUCTURE 
         || obj.type == LOOK_CONSTRUCTION_SITES 
-        || (obj.type == LOOK_TERRAIN && obj.terrain == TERRAIN_MASK_WALL)
+        || (obj.type == LOOK_TERRAIN && obj.terrain == TERRAIN_MASK_WALL))
         {
             return true;
         }

@@ -81,6 +81,47 @@ function setCurrentPhase(room) {
             }
         }
     }
+    /* Phase 3 
+    Spawner             300
+    10x Extension       500
+    -----------------------
+    Gesamt              800
+    */
+    else if (room.energyCapacityAvailable <= 800) {
+        room.memory.phase = {
+            id: 3,
+            creeps: {
+                harvester: {
+                    perSource: false,
+                    count: 2,
+                    modules: [WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE],
+                    memory: {}
+                },
+                miner: {
+                    perSource: true,
+                    count: 1,
+                    modules: [WORK, WORK, WORK, WORK, WORK, WORK, WORK, MOVE, MOVE],
+                    memory: {}
+                },
+                carrier: {
+                    perSource: true,
+                    count: 4,
+                    modules: [CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY,  MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE],
+                    memory: {}
+                },
+                builder: {
+                    perSource: true,
+                    count: 2,
+                    modules: [WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE],
+                    memory: {}
+                }
+            },
+            build: {
+                roads: true,
+                extensionCount: 10
+            }
+        }
+    }
 }
 
 function buildFromQ(room, q, structure)

@@ -1,4 +1,3 @@
-
 var roomController = require('controller.room');
 var buildController = require('controller.build');
 var creepController = require('controller.creep');
