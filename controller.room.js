@@ -58,7 +58,7 @@ function setCurrentPhase(room) {
                 },
                 miner: {
                     perSource: true,
-                    count: 1,
+                    count: 2,
                     modules: [WORK, WORK, WORK, WORK, WORK, MOVE],
                     memory: {}
                 },
@@ -99,7 +99,7 @@ function setCurrentPhase(room) {
                 },
                 miner: {
                     perSource: true,
-                    count: 1,
+                    count: 2,
                     modules: [WORK, WORK, WORK, WORK, WORK, WORK, WORK, MOVE, MOVE],
                     memory: {}
                 },
