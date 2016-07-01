@@ -35,9 +35,9 @@ function planRoads(room) {
         for (var sourceId in sources) {
             var source = sources[sourceId];
 
-            roadQ.concat(planRoadsBetween(room, spawn.pos, source.pos));
+            roadQ = roadQ.concat(planRoadsBetween(room, spawn.pos, source.pos));
         }
-        roadQ.concat(planRoadsBetween(room, spawn.pos, controller.pos));
+        roadQ = roadQ.concat(planRoadsBetween(room, spawn.pos, controller.pos));
     }
 
     if (!room.memory.build) {
@@ -46,6 +46,31 @@ function planRoads(room) {
     room.memory.build.roadQ = roadQ;
 }
 
+/*
+
+Sets Blue Flags for Extionsions around the spawn:
+
+x = Spawn
+
+This is the area that is queried from the server:
+OOOOO
+OOOOO
+OOXOO
+OOOOO
+OOOOO
+
+These are the possible Locations that are checked:
+
+OOOOO
+OXXXO
+OXOXO
+OXXXO
+OOOOO
+
+as long as there are not enough Places found, the search are increases:
+=======O
+
+*/
 function planExtensions(room) {
 
     removeFlagsByColor(room, COLOR_BLUE);
@@ -65,8 +90,9 @@ function planExtensions(room) {
         for (var x = left + 1; x < right; x++) {
             for (var y = top + 1; y < bottom; y++) {
 
-                var above = coors[y - 1][x];
-                
+                var above = coords[y - 1][x];
+
+		
                 // TODO check if blocked
                 // TODO check if used before in this loop
             }
