@@ -12,7 +12,7 @@ function setCurrentPhase(room) {
     -----------------------
     Gesamt              300
     */
-    if (room.energyCapacityAvailable <= 300) {
+    if (room.energyCapacityAvailable < 550) {
         room.memory.phase = {
             id: 1,
             creeps: {
@@ -53,7 +53,7 @@ function setCurrentPhase(room) {
     -----------------------
     Gesamt              550
     */
-    else if (room.energyCapacityAvailable <= 550) {
+    else if (room.energyCapacityAvailable < 800) {
         room.memory.phase = {
             id: 2,
             creeps: {
@@ -94,7 +94,7 @@ function setCurrentPhase(room) {
     -----------------------
     Gesamt              800
     */
-    else if (room.energyCapacityAvailable <= 800) {
+    else if (room.energyCapacityAvailable < 1300) {
         room.memory.phase = {
             id: 3,
             creeps: {
@@ -128,6 +128,12 @@ function setCurrentPhase(room) {
                 extensionCount: 10
             }
         }
+	/* Phase 4
+	Spawner             300
+	20x Extension      1000
+	-----------------------
+	Gesamt             1300
+	*/
     }
 
     if(oldPhase && oldPhase != room.memory.phase.id)
