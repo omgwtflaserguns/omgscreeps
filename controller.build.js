@@ -46,31 +46,6 @@ function planRoads(room) {
     room.memory.build.roadQ = roadQ;
 }
 
-/*
-
-Sets Blue Flags for Extionsions around the spawn:
-
-x = Spawn
-
-This is the area that is queried from the server:
-OOOOO
-OOOOO
-OOXOO
-OOOOO
-OOOOO
-
-These are the possible Locations that are checked:
-
-OOOOO
-OXXXO
-OXOXO
-OXXXO
-OOOOO
-
-as long as there are not enough Places found, the search are increases:
-=======O
-
-*/
 function planExtensions(room) {
 
     removeFlagsByColor(room, COLOR_BLUE);
@@ -78,8 +53,9 @@ function planExtensions(room) {
     var spawn = room.find(FIND_MY_SPAWNS)[0];
     var extensionQ = [];
 
-    var distance = 1;
-    while (extensionQ.length < room.memory.phase.build.extensionCount) {
+    var distance = 3;
+    var done = 0;
+    while (extensionQ.length < 10) {
         var top = spawn.pos.y - distance;
         var left = spawn.pos.x - distance;
         var bottom = spawn.pos.y + distance;
@@ -88,34 +64,62 @@ function planExtensions(room) {
         var coords = room.lookAtArea(top, left, bottom, right);
 
         for (var x = left + 1; x < right; x++) {
+
+	    if((x < 0 && x > done * -1) || (x > 0 && x < done)){
+		continue;
+	    }
+	    
             for (var y = top + 1; y < bottom; y++) {
 
-                var above = coords[y - 1][x];
+		if((y < 0 && y > done * -1) || (y > 0 && y < done)){
+		    continue;
+		}
 
-		
-                // TODO check if blocked
-                // TODO check if used before in this loop
+		var above = coords[y - 1][x];
+		var beyond = coords[y + 1][x];
+		var toLeft = coords[y][x - 1];
+		var toRight = coords[y][x + 1];
+
+		if(!isCoordBlocked(above)		   
+		   && !isCoordBlocked(beyond)
+		   && !isCoordBlocked(toLeft)
+		   && !isCoordBlocked(toRight)
+		   && !isCoordInQ(x-1, y, extensionQ)
+		   && !isCoordInQ(x+1, y, extensionQ)
+		   && !isCoordInQ(x, y-1, extensionQ)
+		   && !isCoordInQ(x, y+1, extensionQ))
+		{
+		    extensionQ.push({x: x, y: y});
+		    room.getPositionAt(x, y).createFlag(undefined, COLOR_BLUE);		    
+		}
             }
         }
-
-        distance++;
-
-        if (lookObject.type == LOOK_CREEPS && lookObject[LOOK_CREEPS].getActiveBodyparts(ATTACK) == 0) {
-            creep.moveTo(lookObject.creep);
-        }
+	done = distance;
+	distance = distance + 3;    
     }
 
-    //room.getPositionAt(line.x, line.y).createFlag(undefined, COLOR_BLUE);
-
+    
     if (!room.memory.build) {
         room.memory.build = {};
     }
     room.memory.build.extensionQ = extensionQ;
 }
 
+function isCoordInQ(x, y, q){
+    for (var i = 0; i < q.length; i++)
+    {
+	if(q[i].x == x && q[i].y == y)
+	{
+	    return true;
+	}
+    }
+    return false;
+}
+
 function isCoordBlocked(coord) {
     coord.forEach(function (obj) {
-        if (obj.type == LOOK_STRUCTURE 
+        if (obj.type == LOOK_STRUCTURES
+	|| obj.type == LOOK_FLAGS
         || obj.type == LOOK_CONSTRUCTION_SITES 
         || (obj.type == LOOK_TERRAIN && obj.terrain == TERRAIN_MASK_WALL))
         {
@@ -134,6 +138,7 @@ module.exports = {
             var room = Game.rooms[roomId];
 
             planRoads(room);
+	    planExtensions(room);
         }
     }
 }

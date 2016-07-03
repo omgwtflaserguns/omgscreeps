@@ -42,8 +42,7 @@ function setCurrentPhase(room) {
                 }
             },
             build: {
-                roads: false,
-                extensionCount: 0
+                roads: false
             }
         }
     }
@@ -59,7 +58,7 @@ function setCurrentPhase(room) {
             creeps: {
                 harvester: {
                     perSource: false,
-                    count: 2,
+                    count: 1,
                     modules: [WORK, WORK, WORK, CARRY, CARRY, MOVE, MOVE, MOVE],
                     memory: {}
                 },
@@ -71,7 +70,7 @@ function setCurrentPhase(room) {
                 },
                 carrier: {
                     perSource: true,
-                    count: 3,
+                    count: 2,
                     modules: [CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE],
                     memory: {}
                 },
@@ -83,8 +82,7 @@ function setCurrentPhase(room) {
                 }
             },
             build: {
-                roads: true,
-                extensionCount: 5
+                roads: true
             }
         }
     }
@@ -100,7 +98,7 @@ function setCurrentPhase(room) {
             creeps: {
                 harvester: {
                     perSource: false,
-                    count: 2,
+                    count: 1,
                     modules: [WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE],
                     memory: {}
                 },
@@ -112,7 +110,7 @@ function setCurrentPhase(room) {
                 },
                 carrier: {
                     perSource: true,
-                    count: 4,
+                    count: 2,
                     modules: [CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY,  MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE],
                     memory: {}
                 },
@@ -124,8 +122,7 @@ function setCurrentPhase(room) {
                 }
             },
             build: {
-                roads: true,
-                extensionCount: 10
+                roads: true
             }
         }
 	/* Phase 4
