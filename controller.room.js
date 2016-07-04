@@ -76,7 +76,7 @@ function setCurrentPhase(room) {
                 },
                 builder: {
                     perSource: true,
-                    count: 2,
+                    count: 1,
                     modules: [WORK, WORK, WORK, WORK, CARRY, CARRY, MOVE],
                     memory: {}
                 }
@@ -116,7 +116,7 @@ function setCurrentPhase(room) {
                 },
                 builder: {
                     perSource: true,
-                    count: 2,
+                    count: 1,
                     modules: [WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE],
                     memory: {}
                 }
@@ -130,6 +130,45 @@ function setCurrentPhase(room) {
 	20x Extension      1000
 	-----------------------
 	Gesamt             1300
+	*/
+	else if (room.energyCapacityAvailable < 1800) {
+        room.memory.phase = {
+            id: 3,
+            creeps: {
+                harvester: {
+                    perSource: false,
+                    count: 1,
+                    modules: [WORK, WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE],
+                    memory: {}
+                },
+                miner: {
+                    perSource: true,
+                    count: 2,
+                    modules: [WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE],
+                    memory: {}
+                },
+                carrier: {
+                    perSource: true,
+                    count: 2,
+                    modules: [CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE],
+                    memory: {}
+                },
+                builder: {
+                    perSource: true,
+                    count: 1,
+                    modules: [WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARREY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE],
+                    memory: {}
+                }
+            },
+            build: {
+                roads: true
+            }
+        }
+	/* Phase 5
+	Spawner             300
+	30x Extension      1500
+	-----------------------
+	Gesamt             1800
 	*/
     }
 
