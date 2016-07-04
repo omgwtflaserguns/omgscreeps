@@ -34,12 +34,17 @@ module.exports = {
             }
             else {
                 var targets = _.filter(Game.creeps, { memory: { role: 'builder' } });
-
+				
                 var max = -1;
                 var target = undefined;
                 for (var name in targets) {
                     var current = targets[name];
 
+		    if(current.memory.renew)
+		    {
+			continue;
+		    }
+		    
                     var builderSpace = current.carryCapacity - _.sum(current.carry);                    
                     if (builderSpace > max) {
                         target = current;

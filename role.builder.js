@@ -32,7 +32,8 @@ module.exports = {
 
             if (target) {
                 build(creep, target);
-            } else {
+            }
+	    else {		
                 transfer(creep, creep.room.controller);
             }
         }

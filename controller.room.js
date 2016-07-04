@@ -1,4 +1,7 @@
 
+var constants = require('constants');
+
+
 function setCurrentPhase(room) {
 
     var oldPhase = undefined;
@@ -70,13 +73,13 @@ function setCurrentPhase(room) {
                 },
                 carrier: {
                     perSource: true,
-                    count: 2,
+                    count: 3,
                     modules: [CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE],
                     memory: {}
                 },
                 builder: {
-                    perSource: true,
-                    count: 1,
+                    perSource: false,
+                    count: 2,
                     modules: [WORK, WORK, WORK, WORK, CARRY, CARRY, MOVE],
                     memory: {}
                 }
@@ -110,13 +113,13 @@ function setCurrentPhase(room) {
                 },
                 carrier: {
                     perSource: true,
-                    count: 2,
+                    count: 3,
                     modules: [CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY,  MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE],
                     memory: {}
                 },
                 builder: {
-                    perSource: true,
-                    count: 1,
+                    perSource: false,
+                    count: 2,
                     modules: [WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE],
                     memory: {}
                 }
@@ -125,14 +128,15 @@ function setCurrentPhase(room) {
                 roads: true
             }
         }
-	/* Phase 4
-	Spawner             300
-	20x Extension      1000
-	-----------------------
-	Gesamt             1300
-	*/
-	else if (room.energyCapacityAvailable < 1800) {
-        room.memory.phase = {
+    }    
+    /* Phase 4
+    Spawner             300
+    20x Extension      1000
+    -----------------------
+    Gesamt             1300
+    */
+    else if (room.energyCapacityAvailable < 1800) {
+	room.memory.phase = {
             id: 3,
             creeps: {
                 harvester: {
@@ -149,13 +153,13 @@ function setCurrentPhase(room) {
                 },
                 carrier: {
                     perSource: true,
-                    count: 2,
+                    count: 3,
                     modules: [CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE],
                     memory: {}
                 },
                 builder: {
-                    perSource: true,
-                    count: 1,
+                    perSource: false,
+                    count: 2,
                     modules: [WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARREY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE],
                     memory: {}
                 }
@@ -170,6 +174,7 @@ function setCurrentPhase(room) {
 	-----------------------
 	Gesamt             1800
 	*/
+	
     }
 
     if(oldPhase && oldPhase != room.memory.phase.id)
@@ -197,7 +202,7 @@ function buildFromQ(room, q, structure)
     }
     return false;
 }
-
+   
 function createConstructionSites(room) {
 
     if(!room.memory.build)
@@ -219,15 +224,50 @@ function createConstructionSites(room) {
     }    
 }
 
+function dispatchRenew(room)
+{
+    if(!room.memory.renewQ)
+    {
+	return;
+    }
+
+    // TODO: Rooms without spawns
+    			    
+    while(room.memory.renewQ.length > 0)
+    {
+	var next = Game.getObjectById(room.memory.renewQ[0]);
+	
+	if(!next || next.ticksToLive >= constants.renew.upper_bound)
+	{
+	    room.memory.renewQ.splice(0, 1);
+	    continue;
+	}
+
+	if(next.memory.renew)
+	{
+	    return;
+	}	 
+	
+	next.memory.renew = next.pos.findClosestByRange(room.find(FIND_MY_SPAWNS)).id;
+	console.log(next.name + ' is now allowed to renew itself');
+	return;
+    }
+}
+    
 module.exports = {
     run: function () {
 
+	
         for (var name in Game.rooms) {
             var room = Game.rooms[name];
-
-            setCurrentPhase(room);
-
-            createConstructionSites(room);
+            
+	    if(Game.time % 10 == 0)
+	    {
+		setCurrentPhase(room);
+		dispatchRenew(room);
+		createConstructionSites(room);
+		
+	    }
         }
     }
 };

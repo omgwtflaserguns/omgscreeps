@@ -29,11 +29,11 @@ function moveInHomelessCreep(creep) {
 module.exports = {
     run: function () {
 
-        for (var name in Game.creeps) {
+	for (var name in Game.creeps) {
             var creep = Game.creeps[name];
-
+	    
             moveInHomelessCreep(creep);
             executeRole(creep);
-        }        
+        }
     }
 };

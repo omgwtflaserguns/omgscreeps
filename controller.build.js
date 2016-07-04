@@ -137,8 +137,14 @@ module.exports = {
         for (var roomId in Game.rooms) {
             var room = Game.rooms[roomId];
 
-            planRoads(room);
-	    planExtensions(room);
+	    if(Game.time % 15 == 0)
+	    {
+		planRoads(room);
+	    }
+	    if(Game.time % 20 == 0)
+	    {
+		planExtensions(room);
+	    }
         }
     }
 }
