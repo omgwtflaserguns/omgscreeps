@@ -255,19 +255,26 @@ function dispatchRenew(room)
 }
     
 module.exports = {
-    run: function () {
 
-	
-        for (var name in Game.rooms) {
+    setCurrentPhase: function (){
+	for (var name in Game.rooms) {
             var room = Game.rooms[name];
             
-	    if(Game.time % 10 == 0)
-	    {
-		setCurrentPhase(room);
-		dispatchRenew(room);
-		createConstructionSites(room);
-		
-	    }
+	    setCurrentPhase(room);
+        }
+    },
+    dispatchRenew: function (){
+	for (var name in Game.rooms) {
+            var room = Game.rooms[name];
+            
+	    dispatchRenew(room);
+        }
+    },
+    createConstructionSites: function (){
+	for (var name in Game.rooms) {
+            var room = Game.rooms[name];
+            
+	    createConstructionSites(room);
         }
     }
 };

@@ -24,7 +24,7 @@ function planRoads(room) {
 
     removeFlagsByColor(room, COLOR_GREY);
 
-    var spawns = room.find(FIND_STRUCTURES, { filter: (struct) => struct.structureType == STRUCTURE_SPAWN });
+    var spawns = room.find(FIND_MY_STRUCTURES, { filter: (struct) => struct.structureType == STRUCTURE_SPAWN });
     var sources = room.find(FIND_SOURCES);
     var controller = room.controller;
 
@@ -130,21 +130,18 @@ function isCoordBlocked(coord) {
 }
 
 module.exports = {
-    run: function () {
-
-        var flagCount = 0;
-
-        for (var roomId in Game.rooms) {
+    planRoads: function(){
+	for (var roomId in Game.rooms) {
             var room = Game.rooms[roomId];
 
-	    if(Game.time % 15 == 0)
-	    {
-		planRoads(room);
-	    }
-	    if(Game.time % 20 == 0)
-	    {
-		planExtensions(room);
-	    }
+	    planRoads(room);	    
+        }
+    },
+    planExtensions: function(){
+	for (var roomId in Game.rooms) {
+            var room = Game.rooms[roomId];
+
+	    planExtensions(room);	    
         }
     }
 }

@@ -113,29 +113,38 @@ function removeDeadCreeps() {
 }
 
 module.exports = {
-    run: function () {
 
-        var spawning = false;
+    spawnCreeps: function(){
+	for (var spwn in Game.spawns) {
+	    var spawn = Game.spawns[spwn];
+
+            if (spawn.spawning) {
+                continue;
+            }
+
+            spawnCreepsByRoomPhase(spawn);            
+	}
+    },
+    removeDead: function(){
+	for (var spwn in Game.spawns) {
+	    var spawn = Game.spawns[spwn];
+
+            if (spawn.spawning) {
+		return;
+            }
+        }
+        removeDeadCreeps();
+    },
+    renewCreepsInRange: function () {
+
         for (var spwn in Game.spawns) {
             var spawn = Game.spawns[spwn];
 
             if (spawn.spawning) {
-                spawning = true;
                 continue;
             }
 
-            if(Game.time % 10 == 0)
-            {
-                spawning = spawning || spawnCreepsByRoomPhase(spawn);
-            }
-
             renewCreepsInRange(spawn);
-        }
-
-        if (!spawning) {
-            if (Game.time % 50 == 0) {
-                removeDeadCreeps();
-            }
         }
     }
 };
