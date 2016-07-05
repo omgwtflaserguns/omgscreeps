@@ -3,7 +3,6 @@ var buildController = require('controller.build');
 var creepController = require('controller.creep');
 var spawnController = require('controller.spawn');
 var towerController = require('controller.tower');
-var troopController = require('controller.troop');
 
 module.exports.loop = function () {
 
@@ -37,12 +36,6 @@ module.exports.loop = function () {
     creepController.run();
 
     towerController.run();
-    
-    if(Game.time % 47 == 0)
-    {
-	console.log('TroopController - spawn');
-	troopController.spawnTroops();
-    }
 
     if(Game.time % 53 == 0)
     {
