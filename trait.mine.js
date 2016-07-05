@@ -43,8 +43,7 @@ function mine(creep, target){
         creep.moveTo(target);
         return true;
     }
-    else if (result == ERR_NOT_ENOUGH_RESOURCES) {
-        creep.memory.mineTarget = undefined;
+    else if (result == ERR_NOT_ENOUGH_RESOURCES) {        
         return true;
     }
     else if (result == OK)
