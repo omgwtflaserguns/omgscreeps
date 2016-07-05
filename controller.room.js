@@ -192,13 +192,21 @@ function buildFromQ(room, q, structure)
     
     while(q.length > 0)
     {
-        var next = q.splice(0, 1)[0];        
+        var next = q[0];        
         var pos = room.getPositionAt(next.x, next.y);
         var result = room.createConstructionSite(pos, structure)
-        if (result == OK)
+	
+	if(result == ERR_RCL_NOT_ENOUGH)
+	{
+	    return false;
+	}
+
+	q.splice(0,1);
+	
+	if (result == OK)
         {            
             return true;
-        }        
+        }
     }
     return false;
 }
@@ -227,9 +235,6 @@ function createConstructionSites(room) {
     {
         building = buildFromQ(room, room.memory.build.roadQ, STRUCTURE_ROAD);
     }
-    
-    
-
 }
 
 function dispatchRenew(room)

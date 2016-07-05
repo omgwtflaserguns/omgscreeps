@@ -2,6 +2,7 @@ var roomController = require('controller.room');
 var buildController = require('controller.build');
 var creepController = require('controller.creep');
 var spawnController = require('controller.spawn');
+var towerController = require('controller.tower');
 
 module.exports.loop = function () {
 
@@ -36,10 +37,6 @@ module.exports.loop = function () {
 	spawnController.removeDead();
     }
 
-    spawnController.renewCreepsInRange();
-       
-    creepController.run();
-
     if(Game.time % 53 == 0)
     {
 	console.log('BuildController - Plan Roads');
@@ -51,4 +48,11 @@ module.exports.loop = function () {
 	console.log('BuildController - Plan Near Spawn');
 	buildController.planNearSpawn();
     }
+
+    spawnController.renewCreepsInRange();
+    
+    creepController.run();
+
+    towerController.run();
+
 }

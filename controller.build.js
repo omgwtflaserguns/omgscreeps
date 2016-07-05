@@ -55,7 +55,7 @@ function planNearSpawn(room) {
 
     var distance = 1;
     var done = 0;
-    while (nearSpawnQ.length < 10) {
+    while (nearSpawnQ.length < 15) {
         var top = spawn.pos.y - distance;
         var left = spawn.pos.x - distance;
         var bottom = spawn.pos.y + distance;
@@ -95,13 +95,13 @@ function planNearSpawn(room) {
             }
         }
 	done = distance;
-	distance = distance + 1;    
+	distance = distance + 2;    
     }
 
     
     if (!room.memory.build) {
         room.memory.build = {};
-    }
+    }    
     room.memory.build.nearSpawnQ = nearSpawnQ;
 }
 
