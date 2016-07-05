@@ -48,7 +48,7 @@ module.exports.loop = function () {
 
     if(Game.time % 59 == 0)
     {
-	console.log('BuildController - Plan Extensions');
-	buildController.planExtensions();
+	console.log('BuildController - Plan Near Spawn');
+	buildController.planNearSpawn();
     }
 }

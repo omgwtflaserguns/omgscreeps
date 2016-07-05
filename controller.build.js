@@ -36,7 +36,6 @@ function planRoads(room) {
             var source = sources[sourceId];
 
             roadQ = roadQ.concat(planRoadsBetween(room, spawn.pos, source.pos));
-	    console.log('Planning Roads between ' + spawn.id + ' and ' + source.id);
 	}
         roadQ = roadQ.concat(planRoadsBetween(room, spawn.pos, controller.pos));
     }
@@ -47,16 +46,16 @@ function planRoads(room) {
     room.memory.build.roadQ = roadQ;
 }
 
-function planExtensions(room) {
+function planNearSpawn(room) {
 
     removeFlagsByColor(room, COLOR_BLUE);
 
     var spawn = room.find(FIND_MY_SPAWNS)[0];
-    var extensionQ = [];
+    var nearSpawnQ = [];
 
-    var distance = 3;
+    var distance = 1;
     var done = 0;
-    while (extensionQ.length < 10) {
+    while (nearSpawnQ.length < 10) {
         var top = spawn.pos.y - distance;
         var left = spawn.pos.x - distance;
         var bottom = spawn.pos.y + distance;
@@ -85,25 +84,25 @@ function planExtensions(room) {
 		   && !isCoordBlocked(beyond)
 		   && !isCoordBlocked(toLeft)
 		   && !isCoordBlocked(toRight)
-		   && !isCoordInQ(x-1, y, extensionQ)
-		   && !isCoordInQ(x+1, y, extensionQ)
-		   && !isCoordInQ(x, y-1, extensionQ)
-		   && !isCoordInQ(x, y+1, extensionQ))
+		   && !isCoordInQ(x-1, y, nearSpawnQ)
+		   && !isCoordInQ(x+1, y, nearSpawnQ)
+		   && !isCoordInQ(x, y-1, nearSpawnQ)
+		   && !isCoordInQ(x, y+1, nearSpawnQ))
 		{
-		    extensionQ.push({x: x, y: y});
+		    nearSpawnQ.push({x: x, y: y});
 		    room.getPositionAt(x, y).createFlag(undefined, COLOR_BLUE);		    
 		}
             }
         }
 	done = distance;
-	distance = distance + 3;    
+	distance = distance + 1;    
     }
 
     
     if (!room.memory.build) {
         room.memory.build = {};
     }
-    room.memory.build.extensionQ = extensionQ;
+    room.memory.build.nearSpawnQ = nearSpawnQ;
 }
 
 function isCoordInQ(x, y, q){
@@ -138,11 +137,11 @@ module.exports = {
 	    planRoads(room);	    
         }
     },
-    planExtensions: function(){
+    planNearSpawn: function(){
 	for (var roomId in Game.rooms) {
             var room = Game.rooms[roomId];
 
-	    planExtensions(room);	    
+	    planNearSpawn(room);	    
         }
     }
 }

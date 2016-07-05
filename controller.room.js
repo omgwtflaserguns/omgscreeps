@@ -216,12 +216,20 @@ function createConstructionSites(room) {
         return;
     }
 
-    var building = buildFromQ(room, room.memory.build.extensionQ, STRUCTURE_EXTENSION);
+    var building = buildFromQ(room, room.memory.build.nearSpawnQ, STRUCTURE_TOWER);
+
+    if(!building)
+    {
+        building = buildFromQ(room, room.memory.build.nearSpawnQ, STRUCTURE_EXTENSION);
+    }
 
     if(!building && room.memory.phase.build.roads === true)
     {
         building = buildFromQ(room, room.memory.build.roadQ, STRUCTURE_ROAD);
-    }    
+    }
+    
+    
+
 }
 
 function dispatchRenew(room)
