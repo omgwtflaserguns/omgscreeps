@@ -33,8 +33,15 @@ module.exports = {
             if (target) {
                 build(creep, target);
             }
-	    else {		
-                transfer(creep, creep.room.controller);
+	    else {
+		if(creep.pos.getRangeTo(creep.room.controller) > 1)
+		{
+		    creep.moveTo(creep.room.controller);
+		}
+		else
+		{
+                    transfer(creep, creep.room.controller);
+		}
             }
         }
     }

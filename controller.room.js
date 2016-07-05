@@ -79,7 +79,7 @@ function setCurrentPhase(room) {
                 },
                 builder: {
                     perSource: false,
-                    count: 2,
+                    count: 3,
                     modules: [WORK, WORK, WORK, WORK, CARRY, CARRY, MOVE],
                     memory: {}
                 }
@@ -119,7 +119,7 @@ function setCurrentPhase(room) {
                 },
                 builder: {
                     perSource: false,
-                    count: 2,
+                    count: 3,
                     modules: [WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE],
                     memory: {}
                 }
@@ -159,7 +159,7 @@ function setCurrentPhase(room) {
                 },
                 builder: {
                     perSource: false,
-                    count: 2,
+                    count: 3,
                     modules: [WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARREY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE],
                     memory: {}
                 }
