@@ -18,7 +18,7 @@ function spawnCreep(spawn, modules, role, memory) {
 function renewCreepsInRange(spawn) {
     var targets = spawn.pos.findInRange(FIND_MY_CREEPS, 1, {
         filter: (creep) => {
-            return creep.memory.renew == spawn.id && creep.ticksToLive < constants.renew.upper_bound;
+            return creep.memory.renew == spawn.id && !creep.memory.deprecated && creep.ticksToLive < constants.renew.upper_bound;
         }
     });
 

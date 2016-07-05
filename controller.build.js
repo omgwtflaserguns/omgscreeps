@@ -14,7 +14,7 @@ function planRoadsBetween(room, posA, posB) {
     var q = [];
     for (var i = 0; i < path.length; i++) {
         var line = path[i];
-        room.getPositionAt(line.x, line.y).createFlag(undefined, COLOR_GREY);
+        //room.getPositionAt(line.x, line.y).createFlag(undefined, COLOR_GREY);
         q.push({ x: line.x, y: line.y });
     }
     return q;
@@ -22,7 +22,7 @@ function planRoadsBetween(room, posA, posB) {
 
 function planRoads(room) {
 
-    removeFlagsByColor(room, COLOR_GREY);
+    //removeFlagsByColor(room, COLOR_GREY);
 
     var spawns = room.find(FIND_MY_STRUCTURES, { filter: (struct) => struct.structureType == STRUCTURE_SPAWN });
     var sources = room.find(FIND_SOURCES);
@@ -36,7 +36,8 @@ function planRoads(room) {
             var source = sources[sourceId];
 
             roadQ = roadQ.concat(planRoadsBetween(room, spawn.pos, source.pos));
-        }
+	    console.log('Planning Roads between ' + spawn.id + ' and ' + source.id);
+	}
         roadQ = roadQ.concat(planRoadsBetween(room, spawn.pos, controller.pos));
     }
 
