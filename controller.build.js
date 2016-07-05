@@ -90,7 +90,7 @@ function planNearSpawn(room) {
 		   && !isCoordInQ(x, y+1, nearSpawnQ))
 		{
 		    nearSpawnQ.push({x: x, y: y});
-		    room.getPositionAt(x, y).createFlag(undefined, COLOR_BLUE);		    
+		    //room.getPositionAt(x, y).createFlag(undefined, COLOR_BLUE);		    
 		}
             }
         }

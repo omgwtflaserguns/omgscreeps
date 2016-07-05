@@ -1,6 +1,6 @@
 
 var _ = require('lodash');
-
+var constants = require('constants');
 
 function attackInvaders(tower){
 
@@ -16,11 +16,32 @@ function attackInvaders(tower){
 
 function healCreeps(tower){
 
+    var healable = tower.pos.findClosestByRange(FIND_MY_CREEPS, {filter: (creep) => creep.hitsMax - creep.hits > constants.heal_treshold});
+
+    if(healable)
+    {
+	tower.heal(healable);
+	return true;
+    }
+    
     return false;
 }
 
 function maintainStructures(tower){
 
+    var repairable = tower.pos.findClosestByRange(FIND_MY_STRUCTURES, {filter: (struct) => struct.hitsMax - struct.hits > constants.repair_treshold});
+   
+    if(!repairable)
+    {
+	repairable = tower.pos.findClosestByRange(FIND_STRUCTURES, {filter: {structureType: STRUCTURE_ROAD}});
+    }
+
+    if(repairable)
+    {
+	tower.repair(repairable);
+	return true;
+    }
+    
     return false;
 }
 

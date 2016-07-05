@@ -140,6 +140,7 @@ module.exports = {
         for (var spwn in Game.spawns) {
             var spawn = Game.spawns[spwn];
 
+	    
             if (spawn.spawning) {
                 continue;
             }
