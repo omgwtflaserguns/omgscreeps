@@ -68,13 +68,22 @@ function spawnCreepsByRoomPhase(spawn) {
             //console.log("Spawn Iteration: " + currentSpawnIteration + " for role " + role + " " + existingCreeps[role] + " / " + countTarget)
             
             if (countTarget > 0 && (!(role in existingCreeps) || existingCreeps[role] < countTarget)) {
-                return spawnCreep(spawn, typeDefinition.modules, role, typeDefinition.memory);
+                return spawnCreep(spawn, createModules(typeDefinition.modules), role, typeDefinition.memory);
             }
         }
     }
 
     // All new creeps are spawned, harvest old ones...
     deprecateCreeps(spawn);
+}
+
+function createModules(definition){
+    
+    var modules = [];
+    _.forEach(definition, function(line) {
+	modules = modules.concat(_.times(line.count, (c) => line.module));	
+    });
+    return modules;
 }
 
 function deprecateCreeps(spawn) {

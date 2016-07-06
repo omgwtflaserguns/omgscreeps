@@ -11,5 +11,8 @@ module.exports = {
     },
     build:{
 	wallHits: 5000
-    }
+    },
+    range:{
+	builder_controller: 2
+    }    
 }

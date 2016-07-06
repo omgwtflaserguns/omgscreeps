@@ -30,7 +30,7 @@ function healCreeps(tower){
 function maintainStructures(tower){
 
     var repairable = tower.pos.findClosestByRange(FIND_MY_STRUCTURES, {filter: (struct) => struct.hitsMax - struct.hits > constants.treshold.repair
-								      && struct.structureType != STRUCTURE_RAMPART);
+								       && struct.structureType != STRUCTURE_RAMPART});
    
     if(!repairable)
     {

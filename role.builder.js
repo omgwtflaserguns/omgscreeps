@@ -1,10 +1,11 @@
 var traitRenew = require('trait.renew');
 var traitDeprecated = require('trait.deprecated');
+var constants = require('constants');
 
 function build(creep, target) {
     var result = creep.build(target);
 
-    if (result == ERR_NOT_IN_RANGE) {
+    if (result == ERR_NOT_IN_RANGE || result == ERR_NOT_ENOUGH_RESOURCES) {
         creep.moveTo(target);
     }
     else if (result != OK && result != ERR_BUSY && result != ERR_NOT_ENOUGH_RESOURCES) {
@@ -34,7 +35,8 @@ module.exports = {
                 build(creep, target);
             }
 	    else {
-		if(creep.pos.getRangeTo(creep.room.controller) > 1)
+
+		if(creep.pos.getRangeTo(creep.room.controller) > constants.range.builder_controller)
 		{
 		    creep.moveTo(creep.room.controller);
 		}

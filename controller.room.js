@@ -22,25 +22,11 @@ function setCurrentPhase(room) {
                 harvester: {
                     perSource: false,
                     count: 10,
-                    modules: [WORK, WORK, CARRY, MOVE],
-                    memory: {}
-                },
-                miner: {
-                    perSource: false,
-                    count: 0,
-                    modules: [],
-                    memory: {}
-                },
-                carrier: {
-                    perSource: false,
-                    count: 0,
-                    modules: [],
-                    memory: {}
-                },
-                builder: {
-                    perSource: false,
-                    count: 0,
-                    modules: [],
+		    modules: [
+			{ module: WORK, count: 2},  // 200
+			{ module: CARRY, count: 1}, //  50
+			{ module: MOVE, count: 1}   //  50			
+		    ],
                     memory: {}
                 }
             },
@@ -62,26 +48,40 @@ function setCurrentPhase(room) {
                 harvester: {
                     perSource: false,
                     count: 1,
-                    modules: [WORK, WORK, WORK, CARRY, CARRY, MOVE, MOVE, MOVE],
-                    memory: {}
+                    modules: [
+			{ module: WORK, count: 3},  // 300
+			{ module: CARRY, count: 2}, // 100
+			{ module: MOVE, count: 3}   // 150			
+		    ],
+		    memory: {}
                 },
                 miner: {
                     perSource: true,
                     count: 2,
-                    modules: [WORK, WORK, WORK, WORK, WORK, MOVE],
+		    modules: [
+			{ module: WORK, count: 5},  // 500
+			{ module: MOVE, count: 1}   //  50			
+		    ],
                     memory: {}
                 },
                 carrier: {
                     perSource: true,
                     count: 3,
-                    modules: [CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE],
+		    modules: [
+			{ module: CARRY, count: 6}, // 300
+			{ module: MOVE, count: 5}   // 250			
+		    ],
                     memory: {}
                 },
                 builder: {
                     perSource: false,
                     count: 3,
-                    modules: [WORK, WORK, WORK, WORK, CARRY, CARRY, MOVE],
-                    memory: {}
+		    modules: [
+			{ module: WORK, count: 4},  // 400
+			{ module: CARRY, count: 2}, // 100
+			{ module: MOVE, count: 1}   //  50			
+		    ],
+		    memory: {}
                 }
             },
             build: {
@@ -102,25 +102,39 @@ function setCurrentPhase(room) {
                 harvester: {
                     perSource: false,
                     count: 1,
-                    modules: [WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE],
+		    modules: [
+			{ module: WORK, count: 4},  // 400
+			{ module: CARRY, count: 4}, // 200
+			{ module: MOVE, count: 4}   // 200			
+		    ],
                     memory: {}
                 },
                 miner: {
                     perSource: true,
                     count: 2,
-                    modules: [WORK, WORK, WORK, WORK, WORK, WORK, WORK, MOVE, MOVE],
+		    modules: [
+			{ module: WORK, count: 7},  // 700
+			{ module: MOVE, count: 2}   // 100			
+		    ],
                     memory: {}
                 },
                 carrier: {
                     perSource: true,
                     count: 3,
-                    modules: [CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY,  MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE],
+		    modules: [
+			{ module: CARRY, count: 8}, // 400
+			{ module: MOVE, count: 8}   // 400			
+		    ],
                     memory: {}
                 },
                 builder: {
                     perSource: false,
                     count: 3,
-                    modules: [WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE],
+		    modules: [
+			{ module: WORK, count: 5},  // 500
+			{ module: CARRY, count: 3}, // 150
+			{ module: MOVE, count: 3}   // 150			
+		    ],
                     memory: {}
                 }
             },
@@ -135,37 +149,55 @@ function setCurrentPhase(room) {
     -----------------------
     Gesamt             1300
     */
-    else {//if (room.energyCapacityAvailable < 1800) {
+    else if (room.energyCapacityAvailable < 1800) {
 	room.memory.phase = {
             id: 4,
             creeps: {
                 harvester: {
                     perSource: false,
                     count: 1,
-                    modules: [WORK, WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE],
+                    modules: [
+			{ module: WORK, count: 6},  // 600
+			{ module: CARRY, count: 7}, // 350
+			{ module: MOVE, count: 7}   // 350			
+		    ],
                     memory: {}
                 },
                 miner: {
                     perSource: true,
                     count: 2,
-                    modules: [WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE],
+		    modules: [
+			{ module: WORK, count: 10},  // 1000
+			{ module: MOVE, count: 6}    //  300			
+		    ],
                     memory: {}
                 },
                 carrier: {
                     perSource: true,
                     count: 3,
-                    modules: [CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE],
+		    modules: [
+			{ module: CARRY, count: 13}, // 650
+			{ module: MOVE, count: 13}   // 650			
+		    ],
                     memory: {}
                 },
                 builder: {
                     perSource: false,
                     count: 3,
-                    modules: [WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE],
+		    modules: [
+			{ module: WORK, count: 8},  // 800
+			{ module: CARRY, count: 5}, // 250
+			{ module: MOVE, count: 5}   // 250			
+		    ],
                     memory: {}
                 },
 		melee:{
 		    perSource: false,
 		    count: 3,
+		    modules: [
+			{ module: ATTACK, count: 10},  // 800
+			{ module: MOVE, count: 10}     // 500			
+		    ],
 		    modules: [ATTACK, ATTACK, ATTACK, ATTACK, ATTACK, ATTACK, ATTACK, ATTACK, ATTACK, ATTACK, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE],
 		    memory: {}
 		}
@@ -174,13 +206,69 @@ function setCurrentPhase(room) {
                 roads: true
             }
         }
-	/* Phase 5
-	Spawner             300
-	30x Extension      1500
-	-----------------------
-	Gesamt             1800
-	*/
-	
+    }
+    /* Phase 5
+    Spawner             300
+    30x Extension      1500
+    -----------------------
+    Gesamt             1800
+    */
+    else {
+	room.memory.phase = {
+            id: 5,
+            creeps: {
+                harvester: {
+                    perSource: false,
+                    count: 1,
+                    modules: [
+			{ module: WORK, count: 6},   // 600
+			{ module: CARRY, count: 12}, // 600
+			{ module: MOVE, count: 12}   // 600			
+		    ],
+                    memory: {}
+                },
+                miner: {
+                    perSource: true,
+                    count: 2,
+		    modules: [
+			{ module: WORK, count: 12},  // 1200
+			{ module: MOVE, count: 12}   //  600			
+		    ],
+                    memory: {}
+                },
+                carrier: {
+                    perSource: true,
+                    count: 3,
+		    modules: [
+			{ module: CARRY, count: 18}, // 900
+			{ module: MOVE, count: 18}   // 900			
+		    ],
+                    memory: {}
+                },
+                builder: {
+                    perSource: false,
+                    count: 3,
+		    modules: [
+			{ module: WORK, count: 8},   // 800
+			{ module: CARRY, count: 10}, // 500
+			{ module: MOVE, count: 10}   // 500			
+		    ],
+                    memory: {}
+                },
+		melee:{
+		    perSource: false,
+		    count: 3,
+		    modules: [
+			{ module: ATTACK, count: 15},  // 1200
+			{ module: MOVE, count: 12}     //  600			
+		    ],
+		    memory: {}
+		}
+            },
+            build: {
+                roads: true
+            }
+        }
     }
 
     if(oldPhase && oldPhase != room.memory.phase.id)
@@ -256,9 +344,17 @@ function dispatchRenew(room)
     {
 	var next = Game.getObjectById(room.memory.renewQ[0]);
 	
-	if(!next || next.ticksToLive >= constants.renew.upper_bound)
+	if(!next
+	   || next.ticksToLive >= constants.renew.upper_bound
+	   || next.memory.deprecated)
 	{
 	    room.memory.renewQ.splice(0, 1);
+
+	    if(next)
+	    {
+		next.memory.renew = undefined;
+	    }
+	    
 	    continue;
 	}
 
