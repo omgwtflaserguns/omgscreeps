@@ -19,7 +19,7 @@ module.exports = {
 
         if (!traitDeprecated.deprecated(creep) && !traitRenew.renew(creep) && !traitGather.gather(creep)) {
 
-            var target = creep.pos.findClosestByRange(FIND_STRUCTURES, {
+	    var target = creep.pos.findClosestByRange(FIND_STRUCTURES, {
                 filter: (structure) => {
                     return (structure.structureType == STRUCTURE_EXTENSION
                             || structure.structureType == STRUCTURE_SPAWN
