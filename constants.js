@@ -4,6 +4,12 @@ module.exports = {
 	lower_bound: 700,
 	upper_bound: 1200
     },
-    heal_treshold: 50,
-    repair_treshold: 200
+    treshold:{
+	heal: 50,
+	repair: 200,
+	energy_tower: 200
+    },
+    build:{
+	wallHits: 5000
+    }
 }

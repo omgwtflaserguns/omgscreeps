@@ -1,6 +1,7 @@
 var traitGather = require('trait.gather');
 var traitRenew = require('trait.renew');
 var traitDeprecated = require('trait.deprecated');
+var constants = require('constants');
 var _ = require('lodash');
 
 function transfer(creep, target){
@@ -19,16 +20,30 @@ module.exports = {
 
         if (!traitDeprecated.deprecated(creep) && !traitRenew.renew(creep) && !traitGather.gather(creep)) {
 
+	    if(creep.carry.energy == 0)
+	    {
+		creep.moveTo(25,25);
+	    }
+	    
 	    var target = creep.pos.findClosestByRange(FIND_STRUCTURES, {
                 filter: (structure) => {
-                    return (structure.structureType == STRUCTURE_EXTENSION
-                            || structure.structureType == STRUCTURE_SPAWN
-			    || structure.structureType == STRUCTURE_TOWER
-			   )
-                        && structure.energy < structure.energyCapacity;
+                    return structure.structureType == STRUCTURE_TOWER
+			&& structure.energyCapacity - structure.energy > constants.treshold.energy_tower;
                 }
             });
 
+	    if(!target)
+	    {
+		target = creep.pos.findClosestByRange(FIND_STRUCTURES, {
+                    filter: (structure) => {
+			return (structure.structureType == STRUCTURE_EXTENSION
+                            || structure.structureType == STRUCTURE_SPAWN
+			   )
+                        && structure.energy < structure.energyCapacity;
+                    }
+		});
+	    }  
+	    
             if (target) {
                 transfer(creep, target);
             }

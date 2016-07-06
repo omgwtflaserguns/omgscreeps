@@ -29,10 +29,16 @@ function planRoads(room) {
     var controller = room.controller;
 
     var roadQ = [];
-
+   
     for (var spawnId in spawns) {
         var spawn = spawns[spawnId];
-        for (var sourceId in sources) {
+
+	roadQ.push({ x: spawn.pos.x - 1, y: spawn.pos.y });
+	roadQ.push({ x: spawn.pos.x + 1, y: spawn.pos.y });
+	roadQ.push({ x: spawn.pos.x, y: spawn.pos.y - 1 });
+	roadQ.push({ x: spawn.pos.x, y: spawn.pos.y + 1 });
+
+	for (var sourceId in sources) {
             var source = sources[sourceId];
 
             roadQ = roadQ.concat(planRoadsBetween(room, spawn.pos, source.pos));
@@ -103,6 +109,10 @@ function planNearSpawn(room) {
         room.memory.build = {};
     }    
     room.memory.build.nearSpawnQ = nearSpawnQ;
+}
+
+function planWall(room){
+    
 }
 
 function isCoordInQ(x, y, q){

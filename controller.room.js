@@ -135,9 +135,9 @@ function setCurrentPhase(room) {
     -----------------------
     Gesamt             1300
     */
-    else if (room.energyCapacityAvailable < 1800) {
+    else {//if (room.energyCapacityAvailable < 1800) {
 	room.memory.phase = {
-            id: 3,
+            id: 4,
             creeps: {
                 harvester: {
                     perSource: false,
@@ -162,7 +162,13 @@ function setCurrentPhase(room) {
                     count: 3,
                     modules: [WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE],
                     memory: {}
-                }
+                },
+		melee:{
+		    perSource: false,
+		    count: 3,
+		    modules: [ATTACK, ATTACK, ATTACK, ATTACK, ATTACK, ATTACK, ATTACK, ATTACK, ATTACK, ATTACK, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE],
+		    memory: {}
+		}
             },
             build: {
                 roads: true

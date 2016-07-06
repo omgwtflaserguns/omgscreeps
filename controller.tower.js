@@ -16,7 +16,7 @@ function attackInvaders(tower){
 
 function healCreeps(tower){
 
-    var healable = tower.pos.findClosestByRange(FIND_MY_CREEPS, {filter: (creep) => creep.hitsMax - creep.hits > constants.heal_treshold});
+    var healable = tower.pos.findClosestByRange(FIND_MY_CREEPS, {filter: (creep) => creep.hitsMax - creep.hits > constants.treshold.heal});
 
     if(healable)
     {
@@ -29,11 +29,15 @@ function healCreeps(tower){
 
 function maintainStructures(tower){
 
-    var repairable = tower.pos.findClosestByRange(FIND_MY_STRUCTURES, {filter: (struct) => struct.hitsMax - struct.hits > constants.repair_treshold});
+    var repairable = tower.pos.findClosestByRange(FIND_MY_STRUCTURES, {filter: (struct) => struct.hitsMax - struct.hits > constants.treshold.repair
+								      && struct.structureType != STRUCTURE_RAMPART);
    
     if(!repairable)
     {
-	repairable = tower.pos.findClosestByRange(FIND_STRUCTURES, {filter: (struct) => struct.structureType == STRUCTURE_ROAD && struct.hitsMax - struct.hits > constants.repair_treshold});
+	repairable = tower.pos.findClosestByRange(FIND_STRUCTURES, {filter: (struct) => (struct.structureType == STRUCTURE_ROAD
+											|| struct.structureType == STRUCTURE_WALL)
+								   && struct.hitsMax - struct.hits > constants.treshold.repair
+								   && struct.hits < constants.build.wallHits});
     }
 
     if(repairable)
