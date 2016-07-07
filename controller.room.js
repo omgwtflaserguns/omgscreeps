@@ -165,7 +165,7 @@ function setCurrentPhase(room) {
                 },
                 miner: {
                     perSource: true,
-                    count: 2,
+                    count: 1,
 		    modules: [
 			{ module: WORK, count: 10},  // 1000
 			{ module: MOVE, count: 6}    //  300			
@@ -174,7 +174,7 @@ function setCurrentPhase(room) {
                 },
                 carrier: {
                     perSource: true,
-                    count: 3,
+                    count: 2,
 		    modules: [
 			{ module: CARRY, count: 13}, // 650
 			{ module: MOVE, count: 13}   // 650			
@@ -183,7 +183,7 @@ function setCurrentPhase(room) {
                 },
                 builder: {
                     perSource: false,
-                    count: 3,
+                    count: 2,
 		    modules: [
 			{ module: WORK, count: 8},  // 800
 			{ module: CARRY, count: 5}, // 250
@@ -198,7 +198,6 @@ function setCurrentPhase(room) {
 			{ module: ATTACK, count: 10},  // 800
 			{ module: MOVE, count: 10}     // 500			
 		    ],
-		    modules: [ATTACK, ATTACK, ATTACK, ATTACK, ATTACK, ATTACK, ATTACK, ATTACK, ATTACK, ATTACK, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE],
 		    memory: {}
 		}
             },
@@ -229,7 +228,7 @@ function setCurrentPhase(room) {
                 },
                 miner: {
                     perSource: true,
-                    count: 2,
+                    count: 1,
 		    modules: [
 			{ module: WORK, count: 12},  // 1200
 			{ module: MOVE, count: 12}   //  600			
@@ -238,7 +237,7 @@ function setCurrentPhase(room) {
                 },
                 carrier: {
                     perSource: true,
-                    count: 3,
+                    count: 2,
 		    modules: [
 			{ module: CARRY, count: 18}, // 900
 			{ module: MOVE, count: 18}   // 900			
@@ -247,7 +246,7 @@ function setCurrentPhase(room) {
                 },
                 builder: {
                     perSource: false,
-                    count: 3,
+                    count: 2,
 		    modules: [
 			{ module: WORK, count: 8},   // 800
 			{ module: CARRY, count: 10}, // 500

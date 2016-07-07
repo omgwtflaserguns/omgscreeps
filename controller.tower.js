@@ -35,7 +35,8 @@ function maintainStructures(tower){
     if(!repairable)
     {
 	repairable = tower.pos.findClosestByRange(FIND_STRUCTURES, {filter: (struct) => (struct.structureType == STRUCTURE_ROAD
-											|| struct.structureType == STRUCTURE_WALL)
+											 || struct.structureType == STRUCTURE_WALL
+											 || struct.structureType == STRUCTURE_RAMPART)
 								   && struct.hitsMax - struct.hits > constants.treshold.repair
 								   && struct.hits < constants.build.wallHits});
     }

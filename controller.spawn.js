@@ -2,7 +2,10 @@
 var constants = require('constants');
 
 function spawnCreep(spawn, modules, role, memory) {
-    if (spawn.canCreateCreep(modules, undefined) == 0) {
+
+    var result = spawn.canCreateCreep(modules, undefined);
+
+    if (result == 0) {
 
         memory.home = spawn.room.name;
         memory.phase = spawn.room.memory.phase.id;
@@ -12,6 +15,10 @@ function spawnCreep(spawn, modules, role, memory) {
         console.log('Spawning ' + newName + ' phase ' + spawn.room.memory.phase.id + ' ' + role + ' creep with ' + modules);
         return true;
     }
+    else{
+	console.log('Cant spawn creep:' + result + ' mods: ' + modules);
+    }
+
     return false;
 }
 
