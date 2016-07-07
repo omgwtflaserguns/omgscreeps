@@ -23,6 +23,7 @@ module.exports = {
 	    if(creep.carry.energy == 0)
 	    {
 		creep.moveTo(25,25);
+		return;
 	    }
 	    
 	    var target = creep.pos.findClosestByRange(FIND_STRUCTURES, {

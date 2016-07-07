@@ -15,9 +15,6 @@ function spawnCreep(spawn, modules, role, memory) {
         console.log('Spawning ' + newName + ' phase ' + spawn.room.memory.phase.id + ' ' + role + ' creep with ' + modules);
         return true;
     }
-    else{
-	console.log('Cant spawn creep:' + result + ' mods: ' + modules);
-    }
 
     return false;
 }
@@ -37,33 +34,60 @@ function renewCreepsInRange(spawn) {
 function spawnCreepsByRoomPhase(spawn) {
 
     var spawnCount = spawn.room.find(FIND_SOURCES).length;
-
     var existingCreeps = [];
 
+    // Count existing creeps per role
     for (var name in Game.creeps) {
         var creep = Game.creeps[name];
 
-        if (creep.memory.home != spawn.room.name || creep.memory.phase != spawn.room.memory.phase.id) {
-            continue;
-        }
-
-        if (!creep.memory.role) {
-            console.log("Creep " + creep.name + " has no role!");
+        if (creep.memory.home != spawn.room.name || !creep.memory.role) {
             continue;
         }
 
         if (!(creep.memory.role in existingCreeps)) {
-            existingCreeps[creep.memory.role] = 1;
+            existingCreeps[creep.memory.role] = {current: 0, deprec: 0};
         }
-        else {
-            existingCreeps[creep.memory.role] = existingCreeps[creep.memory.role] + 1;
+
+	if (creep.memory.phase == spawn.room.memory.phase.id)
+	{
+            existingCreeps[creep.memory.role].current = existingCreeps[creep.memory.role].current + 1;
+        }
+	else {
+            existingCreeps[creep.memory.role].deprec = existingCreeps[creep.memory.role].deprec + 1;
         }
     }
 
+    // Deprecate creeps that have upgrades already
+    var deprecated = spawn.room.find(FIND_MY_CREEPS, { filter: (creep) => creep.memory.deprecated });
 
+    if (deprecated.length < 1) {
+	for (var name in Game.creeps) {
+	    var creep = Game.creeps[name];
+
+	    if (creep.memory.home != spawn.room.name || !creep.memory.role) {
+		continue;
+	    }
+	    
+	    var typeDefinition = spawn.room.memory.phase.creeps[creep.memory.role];
+            var countTarget = typeDefinition.count;
+
+            if (typeDefinition.perSource) {
+                countTarget = typeDefinition.count * spawnCount;
+            }
+	    
+	    if (creep.memory.phase < spawn.room.memory.phase.id
+		&& countTarget != 0
+		&& (existingCreeps[creep.memory.role].current + existingCreeps[creep.memory.role].deprec) > countTarget) {
+		creep.memory.deprecated = spawn;
+		console.log('Poor deprecated ' + creep.name + ' is waiting to be recycled');
+		break;
+	    }
+	}
+    }
+
+    // Spawn creeps
     for (var currentSpawnIteration = 1; currentSpawnIteration <= spawnCount; currentSpawnIteration++) {
         for (var role in spawn.room.memory.phase.creeps) {
-
             
             var typeDefinition = spawn.room.memory.phase.creeps[role];
             var countTarget = typeDefinition.count;
@@ -73,15 +97,49 @@ function spawnCreepsByRoomPhase(spawn) {
             }
             
             //console.log("Spawn Iteration: " + currentSpawnIteration + " for role " + role + " " + existingCreeps[role] + " / " + countTarget)
-            
-            if (countTarget > 0 && (!(role in existingCreeps) || existingCreeps[role] < countTarget)) {
-                return spawnCreep(spawn, createModules(typeDefinition.modules), role, typeDefinition.memory);
+    	    
+            if (countTarget > 0 && (!(role in existingCreeps) || existingCreeps[role].current < countTarget)) {
+                spawnCreep(spawn, createModules(typeDefinition.modules), role, typeDefinition.memory);
+		return;
             }
         }
     }
 
-    // All new creeps are spawned, harvest old ones...
-    deprecateCreeps(spawn);
+    // Deprecate creeps that have no upgrades (since now all are spawned)
+    var deprecated = spawn.room.find(FIND_MY_CREEPS, { filter: (creep) => creep.memory.deprecated });
+
+    if (deprecated.length < 1) {
+	for (var name in Game.creeps) {
+	    var creep = Game.creeps[name];
+
+	    if (creep.memory.home != spawn.room.name || !creep.memory.role) {
+		continue;
+	    }
+   
+	    var typeDefinition = spawn.room.memory.phase.creeps[creep.memory.role];
+            var countTarget = typeDefinition.count;
+
+            if (typeDefinition.perSource) {
+                countTarget = typeDefinition.count * spawnCount;
+            }
+	    
+	    if (creep.memory.phase < spawn.room.memory.phase.id
+		&& (existingCreeps[creep.memory.role].current + existingCreeps[creep.memory.role].deprec) > countTarget) {
+		creep.memory.deprecated = spawn;
+		console.log('Poor deprecated ' + creep.name + ' is waiting to be recycled');
+		break;
+	    }
+	}
+    }
+
+    var cycle = spawn.pos.findInRange(FIND_MY_CREEPS, 1, { filter: (creep) => creep.memory.deprecated && creep.memory.deprecated.id == spawn.id });
+    if (cycle.length > 0) {
+	console.log(cycle[0].name + ' gets recycled');
+	spawn.recycleCreep(cycle[0]);
+	return;
+    }
+
+
 }
 
 function createModules(definition){
@@ -91,32 +149,6 @@ function createModules(definition){
 	modules = modules.concat(_.times(line.count, (c) => line.module));	
     });
     return modules;
-}
-
-function deprecateCreeps(spawn) {
-    var deprecated = spawn.room.find(FIND_MY_CREEPS, { filter: (creep) => creep.memory.deprecated });
-
-    if (deprecated.length < 1) {
-        for (var name in Game.creeps) {
-            var creep = Game.creeps[name];
-
-            if (creep.memory.home != spawn.room.name) {
-                continue;
-            }
-
-            if (creep.memory.phase < spawn.room.memory.phase.id) {
-                creep.memory.deprecated = spawn;
-                console.log('Poor deprecated ' + creep.name + ' is waiting to be recycled');
-                break;
-            }
-        }
-    }
-
-    var cycle = spawn.pos.findInRange(FIND_MY_CREEPS, 1, { filter: (creep) => creep.memory.deprecated && creep.memory.deprecated.id == spawn.id });
-    if (cycle.length > 0) {
-        console.log(cycle[0].name + ' gets recycled');
-        spawn.recycleCreep(cycle[0]);
-    }
 }
 
 function removeDeadCreeps() {

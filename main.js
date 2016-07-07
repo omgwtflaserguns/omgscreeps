@@ -3,6 +3,7 @@ var buildController = require('controller.build');
 var creepController = require('controller.creep');
 var spawnController = require('controller.spawn');
 var towerController = require('controller.tower');
+var squadController = require('controller.squads');
 
 module.exports.loop = function () {
 
@@ -10,7 +11,6 @@ module.exports.loop = function () {
     
     if(Game.time % 3 == 0)
     {
-	console.log('RoomController - set Phase');
 	roomController.setCurrentPhase();
     }
 
@@ -21,14 +21,17 @@ module.exports.loop = function () {
 
     if(Game.time % 13 == 0)
     {
-	console.log('RoomController - build');
 	roomController.createConstructionSites();
     }
 
-    if(Game.time % 19 == 0)
+    if(Game.time % 7 == 0)
     {
-	console.log('SpawnController - spawn');
 	spawnController.spawnCreeps();
+    }
+
+    if(Game.time % 11 == 0)
+    {
+	squadController.formSquads();
     }
     
     spawnController.renewCreepsInRange();
@@ -39,19 +42,16 @@ module.exports.loop = function () {
 
     if(Game.time % 53 == 0)
     {
-	console.log('BuildController - Plan Roads');
 	buildController.planRoads();
     }
 
     if(Game.time % 59 == 0)
     {
-	console.log('BuildController - Plan Near Spawn');
 	buildController.planNearSpawn();
     }
 
     if(Game.time % 97 == 0)
     {
-	console.log('SpawnController - remove dead');
 	spawnController.removeDead();
     }
 

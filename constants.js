@@ -10,9 +10,13 @@ module.exports = {
 	energy_tower: 200
     },
     build:{
+	concurrent: 3,
 	wallHits: 5000
     },
     range:{
 	builder_controller: 2
-    }    
+    },
+    squads:{
+	melee: 5
+    }
 }

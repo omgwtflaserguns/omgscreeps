@@ -28,7 +28,31 @@ function setCurrentPhase(room) {
 			{ module: MOVE, count: 1}   //  50			
 		    ],
                     memory: {}
-                }
+                },
+                miner: {
+                    perSource: false,
+                    count: 0,
+		    modules: [],
+                    memory: {}
+                },
+                carrier: {
+                    perSource: false,
+                    count: 0,
+		    modules: [],
+                    memory: {}
+                },
+                builder: {
+                    perSource: false,
+                    count: 0,
+		    modules: [],
+                    memory: {}
+                },
+		melee:{
+		    perSource: false,
+		    count: 0,
+		    modules: [],
+		    memory: {}
+		}
             },
             build: {
                 roads: false
@@ -47,13 +71,9 @@ function setCurrentPhase(room) {
             creeps: {
                 harvester: {
                     perSource: false,
-                    count: 1,
-                    modules: [
-			{ module: WORK, count: 3},  // 300
-			{ module: CARRY, count: 2}, // 100
-			{ module: MOVE, count: 3}   // 150			
-		    ],
-		    memory: {}
+                    count: 0,
+		    modules: [],
+                    memory: {}
                 },
                 miner: {
                     perSource: true,
@@ -74,15 +94,21 @@ function setCurrentPhase(room) {
                     memory: {}
                 },
                 builder: {
-                    perSource: false,
-                    count: 3,
+                    perSource: true,
+                    count: 2,
 		    modules: [
 			{ module: WORK, count: 4},  // 400
 			{ module: CARRY, count: 2}, // 100
 			{ module: MOVE, count: 1}   //  50			
 		    ],
 		    memory: {}
-                }
+                },
+		melee:{
+		    perSource: false,
+		    count: 0,
+		    modules: [],
+		    memory: {}
+		}
             },
             build: {
                 roads: true
@@ -101,12 +127,8 @@ function setCurrentPhase(room) {
             creeps: {
                 harvester: {
                     perSource: false,
-                    count: 1,
-		    modules: [
-			{ module: WORK, count: 4},  // 400
-			{ module: CARRY, count: 4}, // 200
-			{ module: MOVE, count: 4}   // 200			
-		    ],
+                    count: 0,
+		    modules: [],
                     memory: {}
                 },
                 miner: {
@@ -128,15 +150,21 @@ function setCurrentPhase(room) {
                     memory: {}
                 },
                 builder: {
-                    perSource: false,
-                    count: 3,
+                    perSource: true,
+                    count: 2,
 		    modules: [
 			{ module: WORK, count: 5},  // 500
 			{ module: CARRY, count: 3}, // 150
 			{ module: MOVE, count: 3}   // 150			
 		    ],
                     memory: {}
-                }
+                },
+		melee:{
+		    perSource: false,
+		    count: 0,
+		    modules: [],
+		    memory: {}
+		}
             },
             build: {
                 roads: true
@@ -155,37 +183,33 @@ function setCurrentPhase(room) {
             creeps: {
                 harvester: {
                     perSource: false,
-                    count: 1,
-                    modules: [
-			{ module: WORK, count: 6},  // 600
-			{ module: CARRY, count: 7}, // 350
-			{ module: MOVE, count: 7}   // 350			
-		    ],
+                    count: 0,
+		    modules: [],
                     memory: {}
                 },
                 miner: {
                     perSource: true,
-                    count: 1,
+                    count: 2,
 		    modules: [
-			{ module: WORK, count: 10},  // 1000
-			{ module: MOVE, count: 6}    //  300			
+			{ module: WORK, count: 8},  // 800
+			{ module: MOVE, count: 4}   // 200			
 		    ],
                     memory: {}
                 },
                 carrier: {
                     perSource: true,
-                    count: 2,
+                    count: 3,
 		    modules: [
-			{ module: CARRY, count: 13}, // 650
-			{ module: MOVE, count: 13}   // 650			
+			{ module: CARRY, count: 10}, // 500
+			{ module: MOVE, count: 10}   // 500			
 		    ],
                     memory: {}
                 },
                 builder: {
-                    perSource: false,
+                    perSource: true,
                     count: 2,
 		    modules: [
-			{ module: WORK, count: 8},  // 800
+			{ module: WORK, count: 6},  // 600
 			{ module: CARRY, count: 5}, // 250
 			{ module: MOVE, count: 5}   // 250			
 		    ],
@@ -193,7 +217,7 @@ function setCurrentPhase(room) {
                 },
 		melee:{
 		    perSource: false,
-		    count: 3,
+		    count: 5,
 		    modules: [
 			{ module: ATTACK, count: 10},  // 800
 			{ module: MOVE, count: 10}     // 500			
@@ -218,45 +242,41 @@ function setCurrentPhase(room) {
             creeps: {
                 harvester: {
                     perSource: false,
-                    count: 1,
-                    modules: [
-			{ module: WORK, count: 6},   // 600
-			{ module: CARRY, count: 12}, // 600
-			{ module: MOVE, count: 12}   // 600			
-		    ],
+                    count: 0,
+		    modules: [],
                     memory: {}
                 },
                 miner: {
                     perSource: true,
-                    count: 1,
+                    count: 2,
 		    modules: [
-			{ module: WORK, count: 12},  // 1200
-			{ module: MOVE, count: 12}   //  600			
+			{ module: WORK, count: 8},  // 800
+			{ module: MOVE, count: 4}   // 200			
 		    ],
                     memory: {}
                 },
                 carrier: {
                     perSource: true,
-                    count: 2,
+                    count: 3,
 		    modules: [
-			{ module: CARRY, count: 18}, // 900
-			{ module: MOVE, count: 18}   // 900			
-		    ],
-                    memory: {}
-                },
-                builder: {
-                    perSource: false,
-                    count: 2,
-		    modules: [
-			{ module: WORK, count: 8},   // 800
 			{ module: CARRY, count: 10}, // 500
 			{ module: MOVE, count: 10}   // 500			
 		    ],
                     memory: {}
                 },
+                builder: {
+                    perSource: true,
+                    count: 2,
+		    modules: [
+			{ module: WORK, count: 6},  // 600
+			{ module: CARRY, count: 5}, // 250
+			{ module: MOVE, count: 5}   // 250			
+		    ],
+                    memory: {}
+                },
 		melee:{
 		    perSource: false,
-		    count: 3,
+		    count: 5,
 		    modules: [
 			{ module: ATTACK, count: 15},  // 1200
 			{ module: MOVE, count: 12}     //  600			
@@ -312,7 +332,7 @@ function createConstructionSites(room) {
     }
 
     var sites = room.find(FIND_CONSTRUCTION_SITES)    
-    if(sites.length > 0)
+    if(sites.length > constants.build.concurrent)
     {
         return;
     }
