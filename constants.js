@@ -1,7 +1,7 @@
 
 module.exports = {
     renew:{
-	lower_bound: 700,
+	lower_bound: 800,
 	upper_bound: 1200
     },
     treshold:{
@@ -17,6 +17,6 @@ module.exports = {
 	builder_controller: 2
     },
     squads:{
-	melee: 5
+	melee: 5	
     }
 }

@@ -57,6 +57,12 @@ function planNearSpawn(room) {
     removeFlagsByColor(room, COLOR_BLUE);
 
     var spawn = room.find(FIND_MY_SPAWNS)[0];
+
+    if(!spawn)
+    {
+	return;
+    }
+    
     var nearSpawnQ = [];
 
     var distance = 1;

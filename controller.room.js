@@ -217,7 +217,7 @@ function setCurrentPhase(room) {
                 },
 		melee:{
 		    perSource: false,
-		    count: 5,
+		    count: 2,
 		    modules: [
 			{ module: ATTACK, count: 10},  // 800
 			{ module: MOVE, count: 10}     // 500			
@@ -357,8 +357,6 @@ function dispatchRenew(room)
 	return;
     }
 
-    // TODO: Rooms without spawns
-    			    
     while(room.memory.renewQ.length > 0)
     {
 	var next = Game.getObjectById(room.memory.renewQ[0]);
@@ -381,9 +379,14 @@ function dispatchRenew(room)
 	{
 	    return;
 	}	 
-	
-	next.memory.renew = next.pos.findClosestByRange(room.find(FIND_MY_SPAWNS)).id;
-	console.log(next.name + ' is now allowed to renew itself');
+
+
+	var spawn = next.pos.findClosestByRange(room.find(FIND_MY_SPAWNS));
+	if(spawn)
+	{
+	    next.memory.renew = spawn.id;
+	    console.log(next.name + ' is now allowed to renew itself');	    
+	}
 	return;
     }
 }
@@ -393,15 +396,25 @@ module.exports = {
     setCurrentPhase: function (){
 	for (var name in Game.rooms) {
             var room = Game.rooms[name];
-            
-	    setCurrentPhase(room);
+
+	    var spawns = room.find(FIND_MY_SPAWNS);
+
+	    if(spawns)
+	    {
+		setCurrentPhase(room);
+	    }
         }
     },
     dispatchRenew: function (){
 	for (var name in Game.rooms) {
             var room = Game.rooms[name];
             
-	    dispatchRenew(room);
+	    var spawns = room.find(FIND_MY_SPAWNS);
+
+	    if(spawns)
+	    {
+		dispatchRenew(room);
+	    }
         }
     },
     createConstructionSites: function (){
