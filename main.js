@@ -8,15 +8,23 @@ var squadController = require('controller.squads');
 module.exports.loop = function () {
 
     // 2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 97
+
+
+    if(!Memory.ctrl)
+    {
+	Memory.ctrl = {
+	    remote_sources: {}
+	};
+    }
     
     if(Game.time % 3 == 0)
     {
 	roomController.setCurrentPhase();
     }
-
+    
     if(Game.time % 5 == 0)
     {	
-	roomController.dispatchRenew();
+	spawnController.dispatchRenew();
     }
 
     if(Game.time % 13 == 0)
@@ -40,7 +48,7 @@ module.exports.loop = function () {
 
     towerController.run();
 
-    if(Game.time % 53 == 0)
+    if(Game.time % 4 == 0)
     {
 	buildController.planRoads();
     }
@@ -53,6 +61,5 @@ module.exports.loop = function () {
     if(Game.time % 97 == 0)
     {
 	spawnController.removeDead();
-    }
-
+    }   
 }

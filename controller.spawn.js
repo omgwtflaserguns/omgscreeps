@@ -31,9 +31,58 @@ function renewCreepsInRange(spawn) {
     }
 }
 
+function dispatchRenew(spawn)
+{
+    if(!spawn.memory.renewQ)
+    {
+	return;
+    }
+
+    while(spawn.memory.renewQ.length > 0)
+    {
+	var next = Game.getObjectById(spawn.memory.renewQ[0]);
+	
+	if(!next
+	   || next.ticksToLive >= constants.renew.upper_bound
+	   || next.memory.deprecated)
+	{
+	    spawn.memory.renewQ.splice(0, 1);
+
+	    if(next)
+	    {
+		next.memory.renew = undefined;
+	    }
+	    
+	    continue;
+	}
+
+	if(next.memory.renew)
+	{
+	    return;
+	}	 
+
+	next.memory.renew = spawn.id;
+	console.log(next.name + ' is now allowed to renew itself');	    
+
+	return;
+    }
+}
+
+
 function spawnCreepsByRoomPhase(spawn) {
 
     var spawnCount = spawn.room.find(FIND_SOURCES).length;
+    
+    if(Memory.ctrl && Memory.ctrl.remote_sources)
+    {	
+	remoteSources = Memory.ctrl.remote_sources[spawn.room.name];
+
+	if(remoteSources)
+	{
+	    spawnCount += remoteSources.length;
+	}	    
+    }
+    
     var existingCreeps = [];
 
     // Count existing creeps per role
@@ -125,7 +174,7 @@ function spawnCreepsByRoomPhase(spawn) {
 	    
 	    if (creep.memory.phase < spawn.room.memory.phase.id
 		&& (existingCreeps[creep.memory.role].current + existingCreeps[creep.memory.role].deprec) > countTarget) {
-		creep.memory.deprecated = spawn;
+		creep.memory.deprecated = spawn.id;
 		console.log('Poor deprecated ' + creep.name + ' is waiting to be recycled');
 		break;
 	    }
@@ -162,6 +211,13 @@ function removeDeadCreeps() {
 
 module.exports = {
 
+    dispatchRenew: function (){
+	for (var spwn in Game.spawns) {
+            var spawn = Game.spawns[spwn];
+
+	    dispatchRenew(spawn);	    
+        }
+    },
     spawnCreeps: function(){
 	for (var spwn in Game.spawns) {
 	    var spawn = Game.spawns[spwn];

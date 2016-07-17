@@ -13,10 +13,20 @@ module.exports = {
             var spawn = Game.getObjectById(creep.memory.renew);
             if(spawn)
             {
-                creep.drop(RESOURCE_ENERGY);
-                creep.moveTo(spawn);   
-                creep.say('renew');         
-                return true; 
+		creep.drop(RESOURCE_ENERGY);
+		creep.say('renew');
+		
+		if(spawn.room.name != creep.room.name)
+		{
+		    var exitDir = Game.map.findExit(creep.room, spawn.room.name);
+		    var exit = creep.pos.findClosestByRange(exitDir);
+		    creep.moveTo(exit);
+		}
+		else
+		{                
+                    creep.moveTo(spawn);                                               
+		}
+		return true;
             }
             else
             {
@@ -26,13 +36,16 @@ module.exports = {
         }
 	else if(creep.ticksToLive < constants.renew.lower_bound)
 	{
-	    if(!creep.room.memory.renewQ)
+	    var room = Game.rooms[creep.memory.home];
+	    var spawn = room.find(FIND_MY_SPAWNS)[0];
+	    
+	    if(!spawn.memory.renewQ)
 	    {
-		creep.room.memory.renewQ = [];
+		spawn.memory.renewQ = [];
 	    }
-	    if(!creep.room.memory.renewQ.includes(creep.id))
+	    if(!spawn.memory.renewQ.includes(creep.id))
 	    {
-		creep.room.memory.renewQ.push(creep.id);
+		spawn.memory.renewQ.push(creep.id);
 	    }
 	}
         return false;        

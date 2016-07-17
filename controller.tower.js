@@ -4,7 +4,7 @@ var constants = require('constants');
 
 function attackInvaders(tower){
 
-    var hostile = tower.pos.findClosestByRange(FIND_HOSTILE_CREEPS);
+    var hostile = tower.pos.findClosestByRange(FIND_HOSTILE_CREEPS, {filter: (creep) => creep.owner != 'Gadgetroch'});
 
     if(hostile)
     {

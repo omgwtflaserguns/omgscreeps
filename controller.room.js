@@ -1,6 +1,6 @@
 
 var constants = require('constants');
-
+var _ = require('lodash');
 
 function setCurrentPhase(room) {
 
@@ -9,13 +9,13 @@ function setCurrentPhase(room) {
     {
 	oldPhase = room.memory.phase.id;
     }
-
+    
     /* Phase 1 
     Spawner             300
     -----------------------
     Gesamt              300
     */
-    if (room.energyCapacityAvailable < 550) {
+    if (room.energyCapacityAvailable < 550 || _.size(Game.creeps) < constants.minCreeps) {
         room.memory.phase = {
             id: 1,
             creeps: {
@@ -54,7 +54,7 @@ function setCurrentPhase(room) {
 		    memory: {}
 		}
             },
-            build: {
+	    build: {
                 roads: false
             }
         }
@@ -276,10 +276,10 @@ function setCurrentPhase(room) {
                 },
 		melee:{
 		    perSource: false,
-		    count: 5,
+		    count: 2,
 		    modules: [
-			{ module: ATTACK, count: 15},  // 1200
-			{ module: MOVE, count: 12}     //  600			
+			{ module: ATTACK, count: 13},  // 1040
+			{ module: MOVE, count: 15}     //  750			
 		    ],
 		    memory: {}
 		}
@@ -308,7 +308,7 @@ function buildFromQ(room, q, structure)
         var next = q[0];        
         var pos = room.getPositionAt(next.x, next.y);
         var result = room.createConstructionSite(pos, structure)
-	
+
 	if(result == ERR_RCL_NOT_ENOUGH)
 	{
 	    return false;
@@ -350,46 +350,6 @@ function createConstructionSites(room) {
     }
 }
 
-function dispatchRenew(room)
-{
-    if(!room.memory.renewQ)
-    {
-	return;
-    }
-
-    while(room.memory.renewQ.length > 0)
-    {
-	var next = Game.getObjectById(room.memory.renewQ[0]);
-	
-	if(!next
-	   || next.ticksToLive >= constants.renew.upper_bound
-	   || next.memory.deprecated)
-	{
-	    room.memory.renewQ.splice(0, 1);
-
-	    if(next)
-	    {
-		next.memory.renew = undefined;
-	    }
-	    
-	    continue;
-	}
-
-	if(next.memory.renew)
-	{
-	    return;
-	}	 
-
-
-	var spawn = next.pos.findClosestByRange(room.find(FIND_MY_SPAWNS));
-	if(spawn)
-	{
-	    next.memory.renew = spawn.id;
-	    console.log(next.name + ' is now allowed to renew itself');	    
-	}
-	return;
-    }
-}
     
 module.exports = {
 
@@ -402,18 +362,6 @@ module.exports = {
 	    if(spawns)
 	    {
 		setCurrentPhase(room);
-	    }
-        }
-    },
-    dispatchRenew: function (){
-	for (var name in Game.rooms) {
-            var room = Game.rooms[name];
-            
-	    var spawns = room.find(FIND_MY_SPAWNS);
-
-	    if(spawns)
-	    {
-		dispatchRenew(room);
 	    }
         }
     },

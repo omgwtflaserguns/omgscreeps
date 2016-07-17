@@ -1,4 +1,6 @@
 
+var _ = require('lodash');
+
 function removeFlagsByColor(room, color) {
     var flags = room.find(FIND_FLAGS, { filter: (flag) => flag.color == color });
     if (flags) {
@@ -43,6 +45,22 @@ function planRoads(room) {
 
             roadQ = roadQ.concat(planRoadsBetween(room, spawn.pos, source.pos));
 	}
+
+	if(Memory.ctrl && Memory.ctrl.remote_sources)
+	{
+	    remoteSources = Memory.ctrl.remote_sources[room.name];
+
+	    if(remoteSources)
+	    {
+		_.forEach(remoteSources, (remoteSource) => {
+		    
+		    var exitDir = Game.map.findExit(spawn.room, remoteSource.room);
+		    var exit = spawn.pos.findClosestByRange(exitDir);
+		    roadQ = roadQ.concat(planRoadsBetween(room, spawn.pos, exit));
+		});
+	    }	    
+	}
+	
         roadQ = roadQ.concat(planRoadsBetween(room, spawn.pos, controller.pos));
     }
 

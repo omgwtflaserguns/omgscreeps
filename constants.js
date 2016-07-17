@@ -18,5 +18,6 @@ module.exports = {
     },
     squads:{
 	melee: 5	
-    }
+    },
+    minCreeps: 7
 }

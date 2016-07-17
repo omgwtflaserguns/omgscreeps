@@ -6,9 +6,9 @@ var _ = require('lodash');
 module.exports = {
     run: function(creep){
 
-	if(!traitSquad.squad(creep))
+	if(!traitRenew.renew(creep) && !traitDeprecated.deprecated(creep) && !traitSquad.squad(creep))
 	{	
-	    var target = creep.pos.findClosestByRange(FIND_HOSTILE_CREEPS);
+	    var target = creep.pos.findClosestByRange(FIND_HOSTILE_CREEPS, {filter: (creep) => creep.owner != 'Gadgetroch'});
 
 	    if(target){
 		var result = creep.attack(target);
@@ -20,9 +20,7 @@ module.exports = {
 	     
 	    }
 	    else {
-		if(!traitRenew.renew(creep) && !traitDeprecated.deprecated(creep)){
-		    creep.moveTo(25,25);
-		}	    
+		creep.moveTo(25,25);			    
 	    }
 	}
     }    

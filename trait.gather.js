@@ -1,45 +1,68 @@
 function setTarget(creep) {
 
-    var resources = creep.room.find(FIND_DROPPED_RESOURCES, { filter: (res) => res.resourceType == RESOURCE_ENERGY});
+    var rooms = [creep.memory.home];
 
-    if (!resources || resources.length == 0) {        
-        return false;
-    }
+    if(Memory.ctrl && Memory.ctrl.remote_sources)
+    {	
+	remoteSources = Memory.ctrl.remote_sources[creep.memory.home];
 
-    var srcCount = new Array();
-    for (var id in resources) {
-        var src = resources[id];
-        srcCount[src.id] = 0
-    }
+	if(remoteSources)
+	{
+	    _.forEach(remoteSources, (remoteSource) => {		   		
 
+		if(!rooms.includes(remoteSource.room))
+		{
+		    rooms.push(remoteSource.room);
+		}
+	    });
+	}	    
+    }    
+
+    var srcCount = new Array();    
+    _.forEach(rooms, (name) => {
+	var room = Game.rooms[name];
+	if(!room)
+	{
+	    return;
+	}
+	var sources = room.find(FIND_DROPPED_RESOURCES, { filter: (res) => { return res.resourceType == RESOURCE_ENERGY} });
+
+	if(sources)
+	{
+	    _.forEach(sources, (source) =>{
+		srcCount[source.id] = {room: name, id: source.id, count: 0}
+	    });
+	}
+
+    });
+    
     for (var name in Game.creeps) {
         var current = Game.creeps[name];
         if (current.memory.gatherTarget) {
             if (current.memory.gatherTarget in srcCount) {
-                srcCount[current.memory.gatherTarget] = srcCount[current.memory.gatherTarget] + 1;
+                srcCount[current.memory.gatherTarget].count = srcCount[current.memory.gatherTarget].count + 1;
             }
         }
     }
 
     var min = 10000;
     var minSrc = undefined;
-    for (var id in resources) {
-        var src = resources[id];
+    
+    for (var id in srcCount) {
+        var src = srcCount[id];
 
-        if (srcCount[src.id] < min) {
-            minSrc = src.id;
-            min = srcCount[src.id];
+        if (src.count < min) {
+            minSrc = src;
+            min = src.count;
         }
     }
 
     if (minSrc) {
-        creep.memory.gatherTarget = minSrc;
-        return true;
+        creep.memory.gatherTarget = minSrc.id;
+	creep.memory.gatherTargetRoom = minSrc.room;
+	return true;
     }
-    else
-    {
-        return false;
-    }
+    return false;
 }
 
 function gather(creep, target){
@@ -73,13 +96,20 @@ module.exports = {
             creep.memory.gathering = true;
         }
 
-        if (!creep.memory.gatherTarget) {
+        if (!creep.memory.gatherTarget || !creep.memory.gatherTargetRoom) {
             if(!setTarget(creep))
             {
                 creep.memory.gathering = false;                
                 return false;
             }
         }
+
+	if(creep.room.name != creep.memory.gatherTargetRoom){	    
+	    var exitDir = Game.map.findExit(creep.room, creep.memory.gatherTargetRoom);
+	    var exit = creep.pos.findClosestByRange(exitDir);
+	    creep.moveTo(exit);
+	    return true;
+	}
 
         var target = Game.getObjectById(creep.memory.gatherTarget);        
 
