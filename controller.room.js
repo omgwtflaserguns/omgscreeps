@@ -1,4 +1,4 @@
-
+var statService = require('service.stats')
 var constants = require('constants');
 var _ = require('lodash');
 
@@ -370,6 +370,14 @@ module.exports = {
             var room = Game.rooms[name];
             
 	    createConstructionSites(room);
+        }
+    },
+    writeStats: function(){
+	for (var name in Game.rooms) {
+            var room = Game.rooms[name];
+            
+	    statService.write('room.' + name + '.energyCapacity', room.energyCapacityAvailable, 'g');
+	    statService.write('room.' + name + '.phase', room.memory.phase.id, 'g');	   
         }
     }
 };

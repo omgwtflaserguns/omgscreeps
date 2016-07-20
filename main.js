@@ -61,5 +61,12 @@ module.exports.loop = function () {
     if(Game.time % 97 == 0)
     {
 	spawnController.removeDead();
-    }   
+    }
+
+    if(Game.time % 17 == 0)
+    {
+	creepController.writeStats();
+	roomController.writeStats();
+	spawnController.writeStats();
+    }
 }

@@ -1,4 +1,4 @@
-
+var statService = require('service.stats');
 var constants = require('constants');
 
 function spawnCreep(spawn, modules, role, memory) {
@@ -250,6 +250,15 @@ module.exports = {
             }
 
             renewCreepsInRange(spawn);
+        }
+    },
+    writeStats: function () {
+
+	for (var spwn in Game.spawns) {
+            var spawn = Game.spawns[spwn];
+
+	    
+            statService.write('spawns.' + spawn.name + '.energy', spawn.energy, 'g');
         }
     }
 };

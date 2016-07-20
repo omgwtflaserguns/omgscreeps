@@ -8,7 +8,7 @@ module.exports = {
 
 	if(!traitRenew.renew(creep) && !traitDeprecated.deprecated(creep) && !traitSquad.squad(creep))
 	{	
-	    var target = creep.pos.findClosestByRange(FIND_HOSTILE_CREEPS, {filter: (creep) => creep.owner != 'Gadgetroch'});
+	    var target = creep.pos.findClosestByRange(FIND_HOSTILE_CREEPS, {filter: (creep) => creep.owner.username != 'Gadgetroch'});
 
 	    if(target){
 		var result = creep.attack(target);
